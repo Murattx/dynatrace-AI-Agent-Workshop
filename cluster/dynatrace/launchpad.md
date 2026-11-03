@@ -13,12 +13,13 @@ investigates a broken cluster and the **BMAD software-building crew** — then
 see, prove, and cut their cost with Dynatrace. The lab is self-paced; most
 attendees get through observe → diagnose → evaluate → optimize in a sitting.
 
-1. **Stand up the platform** inside a GitHub Codespace — a single-node `kind`
-   cluster with **kagent** (agents on Kubernetes), the **BMAD** crew, and the
-   toolchain, all bootstrapped automatically on create
-2. **Wire the agents + GitHub MCP** so the BMAD crew can open issues and PRs on
-   your demo repo, powered by **DeepSeek** reached through the workshop's hosted
-   model proxy (unlocked by your **room password** — no personal LLM key needed)
+1. **Stand up the platform** inside a GitHub Codespace — a two-node `kind`
+   cluster (control plane + worker) with **kagent** and the platform toolchain.
+   The cluster and platform are bootstrapped automatically on create.
+2. **Deploy and wire the agents** with `bash agents/install-agents.sh`: an SRE
+   agent plus the BMAD crew and GitHub MCP. The default model is **DeepSeek** via
+   the workshop's hosted model proxy (unlocked by your **room password** — no
+   personal LLM key needed).
 3. **Secure the agents** with **Tetragon** runtime security (watch an agent read
    credential files) and the Agent Sandbox
 4. **Observe everything in this tenant** — an OpenTelemetry Collector streams the
@@ -111,7 +112,7 @@ for the exact deploy order.
 │  💻 GITHUB CODESPACE                                  │          │
 │                                                       │          │
 │  ┌──────────────────────────────────────────────────┐ │          │
-│  │  KIND CLUSTER  (single node)                     │ │          │
+│  │  KIND CLUSTER  (control plane + worker)           │ │          │
 │  │                                                  │ │          │
 │  │  ┌────────────────────────────────────────────┐  │ │          │
 │  │  │ 🤖  kagent — AI agents on Kubernetes        │  │ │          │
@@ -178,9 +179,10 @@ for the exact deploy order.
    the secrets above (full scope-by-scope guide on the **Start the benchmark** page).
 3. **Click *Code → Codespaces → Create codespace on `main`*** — pick a
    **4-core / 16 GB** (or larger) machine. The bootstrap builds the cluster and
-   installs the agents automatically.
-4. Sanity-check with `kubectl get nodes`, then open the workshop:
-   `mkdocs serve -a 0.0.0.0:8000` and follow the modules in order.
+   installs the platform automatically.
+4. Sanity-check with `kubectl get nodes`, then deploy the agents with
+   `bash agents/install-agents.sh`. Open the in-cluster workshop docs on the
+   forwarded port 8000 and follow the modules in order.
 5. Come back to **this tenant** to observe the agents, evaluate them, and deploy
    the optimization artifacts.
 
