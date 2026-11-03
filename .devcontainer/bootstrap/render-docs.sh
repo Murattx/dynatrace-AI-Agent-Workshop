@@ -29,7 +29,9 @@ source "${SCRIPT_DIR}/lib.sh"
 # sync with the placeholders used across docs/ and cluster/dynatrace/launchpad.md.
 SUBST_VARS='${WORKSHOP_PREFIX} ${DT_TENANT_URL} ${DT_ENVIRONMENT}'
 
-OUT="${REPO_ROOT}/.workshop-site"
+SITE_DIR="${REPO_ROOT}/.workshop-site"
+OUT="$(mktemp -d "${REPO_ROOT}/.workshop-site.render.XXXXXX")"
+trap 'rm -rf "${OUT}"' EXIT
 
 if ! have envsubst; then
   warn "envsubst not found (gettext-base) — docs will not be personalized; the in-cluster site keeps literal \${WORKSHOP_PREFIX} placeholders"
@@ -40,11 +42,9 @@ fi
 resolve_workshop_prefix >/dev/null 2>&1 || true
 export WORKSHOP_PREFIX DT_TENANT_URL DT_ENVIRONMENT
 
-log "rendering personalized docs → ${OUT#${REPO_ROOT}/}  (WORKSHOP_PREFIX='${WORKSHOP_PREFIX:-}')"
+log "rendering personalized docs → ${SITE_DIR#${REPO_ROOT}/}  (WORKSHOP_PREFIX='${WORKSHOP_PREFIX:-}')"
 
-# Rewrite from scratch so a re-run never leaves stale files behind.
-rm -rf "${OUT}"
-mkdir -p "${OUT}"
+# Render separately, then update the stable local output directory in place.
 
 # mkdocs config (docs_dir defaults to ./docs, resolved relative to the config).
 cp "${REPO_ROOT}/mkdocs.yml" "${OUT}/mkdocs.yml"
@@ -147,4 +147,19 @@ if [ -f "${REPO_ROOT}/cluster/dynatrace/launchpad.md" ]; then
   render_launchpad "${OUT}/launchpad.md"
 fi
 
-ok "personalized site rendered under ${OUT#${REPO_ROOT}/} (markdown DQL + launchpad + downloadable notebook/dashboard/workflow JSON; serve in-cluster via cluster/mkdocs/mkdocs.yaml → http://localhost:8000)"
+mkdir -p "${SITE_DIR}"
+find "${SITE_DIR}" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
+cp -a "${OUT}/." "${SITE_DIR}/"
+
+if [ "${SKIP_WORKSHOP_DOCS_CONFIGMAP:-false}" = "true" ]; then
+  :
+elif have kubectl && kubectl get ns workshop-docs >/dev/null 2>&1; then
+  tar -czf "${OUT}/site.tar.gz" -C "${SITE_DIR}" .
+  kubectl -n workshop-docs create configmap workshop-docs-site \
+    --from-file=site.tar.gz="${OUT}/site.tar.gz" \
+    --dry-run=client -o yaml | kubectl apply -f -
+else
+  warn "workshop-docs namespace is not available; rendered files are local only"
+fi
+
+ok "personalized site rendered under ${SITE_DIR#${REPO_ROOT}/} (markdown DQL + launchpad + downloadable notebook/dashboard/workflow JSON; serve in-cluster via cluster/mkdocs/mkdocs.yaml → http://localhost:8000)"

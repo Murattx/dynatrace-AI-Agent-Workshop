@@ -6,14 +6,9 @@
 # manifest brings it onto the devcontainer's kind cluster the same way, so the
 # docs are exposed on a namespace like everything else (ISI-6835 convention).
 #
-# CONTENT: the pod serves `.workshop-site/` — the per-attendee render produced by
-# .devcontainer/bootstrap/render-docs.sh (DQL + launchpad personalized with the
-# attendee's ${WORKSHOP_PREFIX} / ${DT_TENANT_URL}). The repo's `.workshop-site/`
-# dir is bind-mounted into the kind node via cluster/kind-config.yaml
-# `extraMounts` (hostPath → node path /workshop-site), then into this pod as a
-# read-only hostPath volume. Bind mounts are live, so render-after-create works
-# and a re-render (postStart) is picked up by `kubectl -n workshop-docs rollout
-# restart deploy/mkdocs`.
+# CONTENT: render-docs.sh packages `.workshop-site/` into a ConfigMap archive.
+# An init container unpacks it into a shared emptyDir for MkDocs. This avoids
+# relying on nested Docker bind-mount propagation inside the Codespace.
 #
 # EXPOSURE: Service type NodePort, fixed nodePort 30800, which kind maps to the
 # forwarded Codespace port 8000 (cluster/kind-config.yaml extraPortMappings).
@@ -45,6 +40,17 @@ spec:
         app.kubernetes.io/part-of: workshop
         app.kubernetes.io/component: docs
     spec:
+      initContainers:
+        - name: unpack-site
+          image: squidfunk/mkdocs-material:9.5.44
+          command: ["sh", "-c"]
+          args: ["tar -xzf /site-archive/site.tar.gz -C /site"]
+          volumeMounts:
+            - name: site-archive
+              mountPath: /site-archive
+              readOnly: true
+            - name: site
+              mountPath: /site
       containers:
         - name: mkdocs
           # Official Material for MkDocs image — material theme + pymdownx
@@ -75,11 +81,10 @@ spec:
               memory: 256Mi
       volumes:
         - name: site
-          hostPath:
-            # Node path fed by cluster/kind-config.yaml extraMounts (= repo
-            # .workshop-site/, rendered by render-docs.sh).
-            path: /workshop-site
-            type: Directory
+          emptyDir: {}
+        - name: site-archive
+          configMap:
+            name: workshop-docs-site
 ---
 apiVersion: v1
 kind: Service

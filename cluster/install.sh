@@ -213,16 +213,16 @@ fi
 
 # ---------------------------------------------------------------------------
 # In-cluster workshop docs: serve the attendee's PERSONALIZED mkdocs site on the
-# cluster the same way as the other UIs (NodePort). Render first so the pod's
-# bind-mounted .workshop-site/ carries the attendee's ${WORKSHOP_PREFIX} /
-# ${DT_TENANT_URL} (ISI-7007). Graceful — a failed render/apply never bricks the
-# Codespace (consistent with the rest of this installer).
+# cluster the same way as the other UIs (NodePort). Render first so the ConfigMap
+# archive carries the attendee's ${WORKSHOP_PREFIX} / ${DT_TENANT_URL} (ISI-7007).
+# Graceful — a failed render/apply never bricks the Codespace.
 if [ "$INSTALL_MKDOCS" = "true" ]; then
   log "7/7  In-cluster workshop docs (mkdocs NodePort 30800 -> localhost:8000)"
   ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+  kubectl get ns workshop-docs >/dev/null 2>&1 || kubectl create ns workshop-docs >/dev/null
   bash "${ROOT}/.devcontainer/bootstrap/render-docs.sh" || warn "docs render reported issues — serving whatever is under .workshop-site/"
   kubectl apply -f "${SCRIPT_DIR}/mkdocs/mkdocs.yaml" || warn "mkdocs manifest apply reported issues"
-  # Pick up a fresh render if the Deployment already existed (bind mount is live).
+  # Pick up the refreshed ConfigMap archive if the Deployment already existed.
   kubectl -n workshop-docs rollout restart deploy/mkdocs >/dev/null 2>&1 || true
   kubectl -n workshop-docs rollout status deploy/mkdocs --timeout=120s || warn "mkdocs not ready yet — check: kubectl -n workshop-docs get pods"
 else

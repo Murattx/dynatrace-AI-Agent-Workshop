@@ -41,11 +41,10 @@ ingress controller, no manual `kubectl port-forward`.
   `.workshop-site/` — a **per-attendee render** (`.devcontainer/bootstrap/render-docs.sh`,
   scoped `envsubst`) where the DQL queries and the Dynatrace launchpad are already
   filled in with the attendee's `${WORKSHOP_PREFIX}` / `${DT_TENANT_URL}`. The
-  render dir is bind-mounted into the kind nodes via `kind-config.yaml`
-  `extraMounts` (hostPath rendered at create time by `create-cluster.sh`, present
-  on both nodes so the pod serves wherever it is scheduled; bind mounts are live,
-  so `postStart` re-renders + `rollout restart` picks up doc changes after a
-  `git pull`).
+  renderer packages the site into a ConfigMap archive; an init container unpacks
+  it into a shared `emptyDir`. `postStart` refreshes the ConfigMap and restarts
+  MkDocs so doc changes after a `git pull` are picked up without nested Docker
+  bind-mount propagation.
 
 > **Memory trade-off:** k3d (k3s) had a lighter footprint, which is why it was the
 > original default on a 4c/16GB machine. kind + the full stack is tighter but fits;

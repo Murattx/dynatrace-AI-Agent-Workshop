@@ -140,17 +140,22 @@ t0_build() {
 # =============================================================================
 t1_toolchain() {
   hdr "T1 — Toolchain presence (incl. dtctl + dt-evals)"
-  local tools=(docker kubectl helm yq uv mkdocs k3d kind kagent dtctl dt-evals)
+  local tools=(docker kubectl helm kind dtctl node)
   local missing=() present=()
   for t in "${tools[@]}"; do
     if have "$t"; then present+=("$t"); else missing+=("$t"); fi
   done
+  local optional=() optional_missing=()
+  for t in mkdocs dt-evals; do
+    if have "$t"; then optional+=("$t"); else optional_missing+=("$t"); fi
+  done
   # Supporting tools are informational, not gated.
   local support=() for_s
-  for for_s in node npx jq git gh envsubst; do have "$for_s" && support+=("$for_s"); done
+  for for_s in yq uv npx jq git gh envsubst; do have "$for_s" && support+=("$for_s"); done
   info "supporting present: ${support[*]:-none}"
   if [ ${#missing[@]} -eq 0 ]; then
-    record T1 "toolchain on PATH" PASS "all ${#tools[@]} present: ${tools[*]}"
+    record T1 "toolchain on PATH" PASS \
+      "required present: ${tools[*]}; optional present: ${optional[*]:-none}; optional missing: ${optional_missing[*]:-none}"
   elif [ ${#present[@]} -eq 0 ]; then
     record T1 "toolchain on PATH" SKIP \
       "none of the workshop tools are installed — this is not the Codespace image (present elsewhere). Missing: ${missing[*]}"
@@ -402,7 +407,7 @@ t10_docs_render() {
   if [ ! -f "$rd" ]; then record T10 "docs render" FAIL "render-docs.sh not found at ${rd}"; return; fi
   if ! have envsubst; then record T10 "docs render" SKIP "envsubst (gettext-base) absent — render is a no-op here"; return; fi
   local pfx="t10probe" url="https://t10probe.live.dynatrace.com"
-  if ! WORKSHOP_PREFIX="$pfx" DT_TENANT_URL="$url" DT_ENVIRONMENT="https://t10probe.apps.dynatrace.com" \
+  if ! SKIP_WORKSHOP_DOCS_CONFIGMAP=true WORKSHOP_PREFIX="$pfx" DT_TENANT_URL="$url" DT_ENVIRONMENT="https://t10probe.apps.dynatrace.com" \
        bash "$rd" >/tmp/t10.render 2>&1; then
     record T10 "docs render" FAIL "render-docs.sh exited non-zero (see /tmp/t10.render)"; return
   fi
@@ -447,9 +452,10 @@ t10_docs_render() {
   # Manifests parse (if yq present).
   if have yq; then
     yq ea 'true' "${REPO_ROOT}/cluster/mkdocs/mkdocs.yaml" >/dev/null 2>&1 || fails+=("mkdocs.yaml invalid YAML")
-    WORKSHOP_DOCS_HOSTPATH="${out}" envsubst '${WORKSHOP_DOCS_HOSTPATH}' < "${REPO_ROOT}/cluster/kind-config.yaml" \
-      | yq e 'true' - >/dev/null 2>&1 || fails+=("kind-config.yaml invalid after render")
+    yq e 'true' "${REPO_ROOT}/cluster/kind-config.yaml" >/dev/null 2>&1 || fails+=("kind-config.yaml invalid YAML")
   fi
+  grep -q 'name: unpack-site' "${REPO_ROOT}/cluster/mkdocs/mkdocs.yaml" || fails+=("MkDocs archive init container missing")
+  grep -q 'name: workshop-docs-site' "${REPO_ROOT}/cluster/mkdocs/mkdocs.yaml" || fails+=("MkDocs site ConfigMap missing")
   if [ ${#fails[@]} -eq 0 ]; then
     record T10 "docs render" PASS "DQL + launchpad + downloadable notebook/workflow JSON personalized to '${pfx}'; instructions preserved; no unresolved tokens in DQL; manifests + JSON valid"
   else

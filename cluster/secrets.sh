@@ -50,7 +50,10 @@ if ! [[ "${WORKSHOP_PREFIX:-}" =~ $WORKSHOP_PREFIX_PATTERN ]]; then
           | sed -E 's/[^a-z0-9-]+/-/g; s/-+/-/g; s/^-+//; s/-+$//')"
     [[ "$s" =~ ^[a-z] ]] || s="w-${s}"
     s="$(printf '%s' "${s:0:19}" | sed -E 's/-+$//')"
-    [[ "$s" =~ $WORKSHOP_PREFIX_PATTERN ]] && printf '%s' "$s"
+    if [[ "$s" =~ $WORKSHOP_PREFIX_PATTERN ]]; then
+      printf '%s' "$s"
+    fi
+    return 0
   }
   WORKSHOP_PREFIX=""
   for _src in "${_raw_prefix}" "${GITHUB_USER:-}" "${CODESPACE_NAME:-}" "workshop"; do
