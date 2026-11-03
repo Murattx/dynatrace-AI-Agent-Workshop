@@ -42,6 +42,11 @@ flowchart LR
 
 ## Start here
 
+Want to reproduce this lab independently or run it without Dynatrace? Start with
+the **[replication and self-study guide](replicate-workshop.md)** for architecture,
+repository map, vendor-neutral setup, optional integrations, verification, and
+teardown.
+
 New to kagent? Read **[kagent in 5 minutes](kagent-explainer.md)** for the mental
 model, then head to **[00 — Setup (Codespace)](00-setup.md)** to boot your
 environment. The modules run in order:
