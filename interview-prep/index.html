@@ -1,0 +1,2159 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Hands-on workshop — cost-efficient AI agent workflows with BMAD, kagent, Kubernetes, and Dynatrace AI Observability.">
+      
+      
+        <meta name="author" content="Henrik Rexed">
+      
+      
+      
+        <link rel="prev" href="../replicate-workshop/">
+      
+      
+        <link rel="next" href="../kagent-explainer/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Interview preparation - Dynatrace AI Agent Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sre-interview-preparation-agent-operations-workshop" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dynatrace AI Agent Workshop" class="md-header__button md-logo" aria-label="Dynatrace AI Agent Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dynatrace AI Agent Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Interview preparation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    henrikrexed/dynatrace-AI-Agent-Workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dynatrace AI Agent Workshop" class="md-nav__button md-logo" aria-label="Dynatrace AI Agent Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dynatrace AI Agent Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    henrikrexed/dynatrace-AI-Agent-Workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../start-benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start the benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../replicate-workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Replicate the workshop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview preparation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview preparation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-project-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-Second Project Story
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#know-these-facts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Know These Facts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-and-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture and Kubernetes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture and Kubernetes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-why-run-agents-on-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why run agents on Kubernetes?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-what-is-the-difference-between-an-agent-resource-and-an-agent-pod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. What is the difference between an Agent resource and an agent pod?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-what-do-helm-and-an-operator-each-contribute-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. What do Helm and an Operator each contribute here?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-why-kind-rather-than-a-managed-kubernetes-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Why Kind rather than a managed Kubernetes cluster?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-how-would-you-diagnose-a-pod-stuck-in-createcontainerconfigerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. How would you diagnose a pod stuck in CreateContainerConfigError?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-what-is-the-difference-between-readiness-and-liveness-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. What is the difference between readiness and liveness probes?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-how-do-you-respond-to-crashloopbackoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. How do you respond to CrashLoopBackOff?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-how-would-you-respond-to-imagepullbackoff-or-oomkilled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. How would you respond to ImagePullBackOff or OOMKilled?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-what-is-the-fault-injection-safety-boundary-in-this-workshop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. What is the fault-injection safety boundary in this workshop?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-what-would-you-monitor-for-the-platform-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. What would you monitor for the platform itself?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sre-incident-and-troubleshooting-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SRE Incident and Troubleshooting Questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SRE Incident and Troubleshooting Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-tell-me-about-an-operational-issue-you-debugged-in-this-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Tell me about an operational issue you debugged in this lab.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-how-did-you-know-the-agent-itself-was-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. How did you know the agent itself was ready?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-what-would-you-do-if-the-kagent-ui-is-reachable-but-an-agent-is-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. What would you do if the kagent UI is reachable but an agent is not?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-what-would-you-do-if-an-agent-gives-an-incorrect-root-cause" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. What would you do if an agent gives an incorrect root cause?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-how-would-you-safely-let-an-agent-remediate-an-incident" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. How would you safely let an agent remediate an incident?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-how-do-you-distinguish-a-model-failure-from-a-tool-or-cluster-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. How do you distinguish a model failure from a tool or cluster failure?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-what-would-you-do-if-an-agent-rollout-never-completes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. What would you do if an agent rollout never completes?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-how-should-the-team-handle-a-model-provider-outage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. How should the team handle a model-provider outage?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability-and-opentelemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability and OpenTelemetry
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Observability and OpenTelemetry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#19-why-opentelemetry-instead-of-instrumenting-each-backend-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Why OpenTelemetry instead of instrumenting each backend directly?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-trace-metric-and-log-when-do-you-use-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Trace, metric, and log: when do you use each?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21-what-is-otlp-and-where-does-it-flow-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. What is OTLP and where does it flow here?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-what-does-the-collector-add-to-the-agent-spans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. What does the Collector add to the agent spans?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-what-are-gen_ai-attributes-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23. What are gen_ai.* attributes for?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-how-do-you-reduce-telemetry-cost-without-losing-diagnostic-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24. How do you reduce telemetry cost without losing diagnostic value?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-what-is-dangerous-about-capturing-prompts-and-completions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25. What is dangerous about capturing prompts and completions?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-how-would-you-troubleshoot-phoenix-has-traces-but-dynatrace-does-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26. How would you troubleshoot “Phoenix has traces but Dynatrace does not”?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-mcp-and-evaluation-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent, MCP, and Evaluation Questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent, MCP, and Evaluation Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#27-what-is-an-ai-agent-in-this-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27. What is an AI agent in this design?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-what-is-mcp-and-why-is-it-used-for-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        28. What is MCP, and why is it used for GitHub?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-what-is-a2a-in-the-workshop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        29. What is A2A in the workshop?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#30-how-does-the-bmad-crew-divide-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        30. How does the BMAD crew divide work?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31-how-do-you-evaluate-an-agent-beyond-the-demo-looked-good" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31. How do you evaluate an agent beyond “the demo looked good”?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-what-do-relevance-faithfulness-and-hallucination-mean-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32. What do relevance, faithfulness, and hallucination mean here?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-how-would-you-evaluate-a-diagnosis-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33. How would you evaluate a diagnosis agent?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-how-can-an-agent-loop-become-expensive-or-stuck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34. How can an agent loop become expensive or stuck?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-how-do-you-prevent-tool-descriptions-or-retrieved-content-from-becoming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35. How do you prevent tool descriptions or retrieved content from becoming
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-privacy-and-regulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security, Privacy, and Regulation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security, Privacy, and Regulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#36-is-this-workshop-production-ready-for-a-regulated-enterprise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36. Is this workshop production-ready for a regulated enterprise?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-what-is-the-least-privilege-model-for-the-github-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37. What is the least-privilege model for the GitHub integration?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-how-would-you-secure-kubernetes-tools-exposed-to-an-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38. How would you secure Kubernetes tools exposed to an agent?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#39-what-do-pod-security-admission-and-networkpolicy-protect-against" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39. What do Pod Security Admission and NetworkPolicy protect against?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#40-what-does-tetragon-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40. What does Tetragon add?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#41-what-data-governance-questions-would-you-ask-before-enabling-a-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41. What data-governance questions would you ask before enabling a model?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-how-do-you-manage-model-and-tool-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        42. How do you manage model and tool credentials?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-what-would-a-regulated-pilot-look-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        43. What would a regulated pilot look like?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-how-would-you-respond-to-a-prompt-injection-incident" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        44. How would you respond to a prompt-injection incident?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reliability-capacity-and-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reliability, Capacity, and Cost
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reliability, Capacity, and Cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#45-what-are-the-main-dependencies-in-the-request-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        45. What are the main dependencies in the request path?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-how-would-you-define-an-slo-for-an-agent-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        46. How would you define an SLO for an agent service?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-how-do-you-prevent-retries-from-amplifying-an-outage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        47. How do you prevent retries from amplifying an outage?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-how-do-you-estimate-and-control-model-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        48. How do you estimate and control model cost?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49-what-resource-limits-matter-for-this-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        49. What resource limits matter for this lab?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#50-what-is-your-disaster-recovery-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        50. What is your disaster-recovery story?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynatrace-and-vendor-neutral-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dynatrace and Vendor-Neutral Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dynatrace and Vendor-Neutral Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-how-does-the-design-avoid-hard-dependence-on-dynatrace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        51. How does the design avoid hard dependence on Dynatrace?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-what-is-the-difference-between-the-dynatrace-urls-and-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        52. What is the difference between the Dynatrace URLs and tokens?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-how-would-you-prove-the-dynatrace-path-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        53. How would you prove the Dynatrace path works?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-how-do-you-avoid-locking-the-design-to-one-observability-vendor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        54. How do you avoid locking the design to one observability vendor?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavioral-and-trade-off-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavioral and Trade-Off Questions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Behavioral and Trade-Off Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#55-why-did-you-build-this-workshop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        55. Why did you build this workshop?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-what-was-your-most-important-design-trade-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        56. What was your most important design trade-off?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-what-would-you-improve-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        57. What would you improve first?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#58-how-did-you-know-the-fix-worked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        58. How did you know the fix worked?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#59-what-would-you-do-if-compliance-rejects-the-model-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        59. What would you do if compliance rejects the model provider?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#60-how-do-you-communicate-uncertainty-in-an-agents-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        60. How do you communicate uncertainty in an agent's answer?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#61-how-would-you-convince-a-skeptical-sre-team-to-try-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        61. How would you convince a skeptical SRE team to try this?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-repeatable-answer-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Repeatable Answer Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions-to-ask-the-interviewer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions to Ask the Interviewer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practice Plan
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kagent-explainer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kagent in 5 minutes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run-of-show/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run of show (guided demo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00 — Setup (Codespace)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-platform-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 — Platform install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-agents-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 — Agents & MCP wiring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-secure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 — Secure agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-observe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 — Observe with Dynatrace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 — Diagnose a broken cluster
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-evaluate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 — Evaluate (Phoenix + dt-evals)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-optimize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 — Optimize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host runbook (facilitator)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sre-interview-preparation-agent-operations-workshop">SRE Interview Preparation: Agent Operations Workshop<a class="headerlink" href="#sre-interview-preparation-agent-operations-workshop" title="Permanent link">&para;</a></h1>
+<p>Use this page to prepare to discuss the workshop in SRE, platform engineering,
+DevOps, and AI infrastructure interviews. It is a question bank with answer
+frameworks, not a script to memorize. Practice explaining the design in your own
+words, draw the data path, and be precise about what you verified versus what you
+would change before production.</p>
+<h2 id="the-60-second-project-story">The 60-Second Project Story<a class="headerlink" href="#the-60-second-project-story" title="Permanent link">&para;</a></h2>
+<p>Adapt this outline to your own experience:</p>
+<blockquote>
+<p>I built a Kubernetes lab to study how to operate AI agents, not to claim that
+this configuration is production-ready. It runs a kagent SRE investigator and
+a six-role BMAD software-building crew. The agents call a model and tools; an
+OpenTelemetry gateway enriches and normalizes their signals and sends traces to
+Phoenix, with Dynatrace as an optional backend. I tested the SRE agent against
+injected Kubernetes faults and compared its findings with scenario ground
+truth. The most useful operational lesson was that an accepted agent resource
+is not necessarily a ready workload: I diagnosed a missing model Secret from
+pod events, traced it to a bootstrap failure, fixed the provisioning path, and
+verified the agents became Ready and produced Phoenix spans. Before an
+enterprise pilot, I would replace the lab's unauthenticated runtime posture,
+tighten identity and tool permissions, and define data and model governance.</p>
+</blockquote>
+<p>Only say that you personally performed work you actually did. In particular,
+the current Codespace was verified with the agents and Phoenix, but it did not
+have Dynatrace tenant credentials configured. Describe Dynatrace as an optional
+integration in this run unless you configure it and verify tenant data yourself.</p>
+<h2 id="know-these-facts">Know These Facts<a class="headerlink" href="#know-these-facts" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Accurate workshop description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cluster</td>
+<td>Kind cluster named <code>workshop</code>, with a control-plane node and a worker node. It is a local lab, not a production Kubernetes service.</td>
+</tr>
+<tr>
+<td>Agent count</td>
+<td>Seven kagent Agents: one SRE agent plus analyst, PM, architect, developer, QA, and orchestrator roles in the BMAD crew.</td>
+</tr>
+<tr>
+<td>Runtime</td>
+<td>kagent is installed via pinned OCI Helm charts; agents are Kubernetes resources reconciled by the kagent controller.</td>
+</tr>
+<tr>
+<td>Tools</td>
+<td>The SRE agent uses the kagent Kubernetes/networking tool server. BMAD uses a GitHub MCP server for repository actions.</td>
+</tr>
+<tr>
+<td>Model</td>
+<td>The default is <code>deepseek-chat</code> through an OpenAI-compatible endpoint. The workshop proxy path dispenses a per-attendee key; self-hosting can use a provider key and endpoint.</td>
+</tr>
+<tr>
+<td>Telemetry</td>
+<td>Agent traces go by OTLP to the OpenTelemetry gateway. It adds Kubernetes/resource attributes and normalizes GenAI fields, then exports to Phoenix and optionally Dynatrace.</td>
+</tr>
+<tr>
+<td>Local trace UI</td>
+<td>Phoenix is available on port 6006. It is useful without a Dynatrace tenant, though its own LLM evaluation judge still needs a model endpoint.</td>
+</tr>
+<tr>
+<td>Dynatrace</td>
+<td>Optional. The full path needs tenant ingest credentials; Kubernetes topology and <code>dtctl</code>/<code>dt-evals</code> have additional token scopes.</td>
+</tr>
+<tr>
+<td>Security lab</td>
+<td>The repo includes a restricted Pod Security Admission and default-deny NetworkPolicy baseline, plus optional Tetragon runtime monitoring. These do not by themselves establish enterprise compliance.</td>
+</tr>
+<tr>
+<td>Sample app</td>
+<td><code>sympozium-todo-demo</code> is a BMAD GitHub target, not a ready-to-run workload: it currently lacks an <code>npm start</code> script and Kubernetes deployment assets.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="architecture-and-kubernetes">Architecture and Kubernetes<a class="headerlink" href="#architecture-and-kubernetes" title="Permanent link">&para;</a></h2>
+<h3 id="1-why-run-agents-on-kubernetes">1. Why run agents on Kubernetes?<a class="headerlink" href="#1-why-run-agents-on-kubernetes" title="Permanent link">&para;</a></h3>
+<p>Explain the operational advantages: standard scheduling and rollout controls,
+resource requests/limits, service discovery, policy enforcement, and a shared
+platform for logs/metrics/traces. Balance that with the costs: controllers,
+CRDs, resource pressure, network and identity complexity, and more failure
+modes than a single process. Kubernetes is not automatically the right runtime
+for every agent workload.</p>
+<h3 id="2-what-is-the-difference-between-an-agent-resource-and-an-agent-pod">2. What is the difference between an Agent resource and an agent pod?<a class="headerlink" href="#2-what-is-the-difference-between-an-agent-resource-and-an-agent-pod" title="Permanent link">&para;</a></h3>
+<p>An Agent is a declarative custom resource describing the agent. The kagent
+controller reconciles it into runtime Kubernetes resources, including a
+Deployment and pod. <code>ACCEPTED=True</code> means the controller accepted the spec;
+<code>READY=True</code> and a <code>1/1 Running</code> pod are stronger evidence that the workload is
+serving. Always inspect the Deployment, pod events, and logs too.</p>
+<h3 id="3-what-do-helm-and-an-operator-each-contribute-here">3. What do Helm and an Operator each contribute here?<a class="headerlink" href="#3-what-do-helm-and-an-operator-each-contribute-here" title="Permanent link">&para;</a></h3>
+<p>Helm installs versioned charts and their packaged Kubernetes resources. The
+OpenTelemetry and Dynatrace Operators watch custom resources and reconcile
+ongoing desired state, such as a Collector or DynaKube. Helm release success
+does not prove every custom resource or downstream workload is healthy.</p>
+<h3 id="4-why-kind-rather-than-a-managed-kubernetes-cluster">4. Why Kind rather than a managed Kubernetes cluster?<a class="headerlink" href="#4-why-kind-rather-than-a-managed-kubernetes-cluster" title="Permanent link">&para;</a></h3>
+<p>Kind gives a repeatable, inexpensive local lab using Docker containers as
+Kubernetes nodes. It is good for learning and CI, but it does not reproduce a
+managed control plane, cloud IAM, production networking, storage, scale, or
+availability. A real enterprise deployment needs a separate target design and
+validation plan.</p>
+<h3 id="5-how-would-you-diagnose-a-pod-stuck-in-createcontainerconfigerror">5. How would you diagnose a pod stuck in <code>CreateContainerConfigError</code>?<a class="headerlink" href="#5-how-would-you-diagnose-a-pod-stuck-in-createcontainerconfigerror" title="Permanent link">&para;</a></h3>
+<p>Start with <code>kubectl describe pod</code> and recent namespace events. Identify the
+specific missing config, Secret, volume, or service account. Verify resource
+existence without printing Secret data, correct the source-of-truth provisioning
+path, then watch the Deployment roll out and confirm readiness. Do not start by
+deleting pods or dumping credentials.</p>
+<h3 id="6-what-is-the-difference-between-readiness-and-liveness-probes">6. What is the difference between readiness and liveness probes?<a class="headerlink" href="#6-what-is-the-difference-between-readiness-and-liveness-probes" title="Permanent link">&para;</a></h3>
+<p>Readiness controls whether a pod should receive traffic; liveness determines
+whether Kubernetes should restart it. A bad liveness probe can create restart
+loops, while an overly permissive readiness probe can route traffic to a broken
+container. Startup probes can protect slow initialization from premature
+liveness failures.</p>
+<h3 id="7-how-do-you-respond-to-crashloopbackoff">7. How do you respond to <code>CrashLoopBackOff</code>?<a class="headerlink" href="#7-how-do-you-respond-to-crashloopbackoff" title="Permanent link">&para;</a></h3>
+<p>Check restart count, current and previous container logs, <code>lastState</code>, exit code,
+and events. Determine whether the process exits, is killed, or fails a probe;
+then verify dependencies, configuration, resource limits, and rollout history.
+Use the scenario answer key as ground truth in the lab rather than assuming the
+agent's diagnosis is correct.</p>
+<h3 id="8-how-would-you-respond-to-imagepullbackoff-or-oomkilled">8. How would you respond to <code>ImagePullBackOff</code> or <code>OOMKilled</code>?<a class="headerlink" href="#8-how-would-you-respond-to-imagepullbackoff-or-oomkilled" title="Permanent link">&para;</a></h3>
+<p>For <code>ImagePullBackOff</code>, inspect pod events, image name/tag, registry reachability,
+and pull credentials; there may be no useful container logs because it never
+started. For <code>OOMKilled</code>, inspect the terminated reason, memory usage/limits,
+recent events, and workload behavior. These are different evidence channels;
+avoid diagnosing one from symptoms that only support another.</p>
+<h3 id="9-what-is-the-fault-injection-safety-boundary-in-this-workshop">9. What is the fault-injection safety boundary in this workshop?<a class="headerlink" href="#9-what-is-the-fault-injection-safety-boundary-in-this-workshop" title="Permanent link">&para;</a></h3>
+<p>Scenarios are applied into the dedicated <code>workshop-faults</code> namespace and have
+explicit cleanup. The runner validates namespaces to limit blast radius. Explain
+why an allowlist is safer than a blocklist and why cleanup is part of the test,
+not an optional afterthought. Never inject a fault into a production cluster.</p>
+<h3 id="10-what-would-you-monitor-for-the-platform-itself">10. What would you monitor for the platform itself?<a class="headerlink" href="#10-what-would-you-monitor-for-the-platform-itself" title="Permanent link">&para;</a></h3>
+<p>Cluster and node health, pod readiness/restarts, CPU/memory, queue/backpressure,
+Collector exporter failures, model request latency/errors, agent task completion,
+tool failures, and evaluation quality. Tie alerts to user impact and SLOs rather
+than alerting on every internal metric.</p>
+<h2 id="sre-incident-and-troubleshooting-questions">SRE Incident and Troubleshooting Questions<a class="headerlink" href="#sre-incident-and-troubleshooting-questions" title="Permanent link">&para;</a></h2>
+<h3 id="11-tell-me-about-an-operational-issue-you-debugged-in-this-lab">11. Tell me about an operational issue you debugged in this lab.<a class="headerlink" href="#11-tell-me-about-an-operational-issue-you-debugged-in-this-lab" title="Permanent link">&para;</a></h3>
+<p>Use a truthful STAR story: agent resources were accepted but not ready; pod
+events showed the missing <code>kagent-deepseek</code> Secret; the key existed in the
+generated proxy environment, but the secret provisioning script exited before
+creating it when prefix normalization returned a nonzero status under <code>set -e</code>;
+you made the invalid-candidate path return successfully, reran provisioning,
+then verified Secret existence, seven Ready agents, a completed SRE request, and
+Phoenix spans. Keep it explicitly framed as a lab/bootstrap defect, not a
+production incident.</p>
+<h3 id="12-how-did-you-know-the-agent-itself-was-ready">12. How did you know the agent itself was ready?<a class="headerlink" href="#12-how-did-you-know-the-agent-itself-was-ready" title="Permanent link">&para;</a></h3>
+<p>Use multiple signals: accepted/ready conditions on all seven Agent resources,
+each generated pod <code>1/1 Running</code>, a successful read-only A2A request, and
+agent/LLM/tool spans in Phoenix. A green Helm release alone would not have been
+sufficient.</p>
+<h3 id="13-what-would-you-do-if-the-kagent-ui-is-reachable-but-an-agent-is-not">13. What would you do if the kagent UI is reachable but an agent is not?<a class="headerlink" href="#13-what-would-you-do-if-the-kagent-ui-is-reachable-but-an-agent-is-not" title="Permanent link">&para;</a></h3>
+<p>Separate UI/controller health from per-agent runtime health. Check Agent status,
+Deployment, pod events, logs, model Secret references, MCP discovery, tool
+server health, and model endpoint reachability. A healthy UI only proves the UI
+path works.</p>
+<h3 id="14-what-would-you-do-if-an-agent-gives-an-incorrect-root-cause">14. What would you do if an agent gives an incorrect root cause?<a class="headerlink" href="#14-what-would-you-do-if-an-agent-gives-an-incorrect-root-cause" title="Permanent link">&para;</a></h3>
+<p>Treat the answer as a hypothesis. Ask for the exact supporting events, logs,
+status fields, or traces; compare them with known ground truth; distinguish
+missing evidence from contradictory evidence; and avoid remediation until the
+cause is established. Record the result as an evaluation example and improve
+the prompt, tools, or workflow only after reproducing the failure.</p>
+<h3 id="15-how-would-you-safely-let-an-agent-remediate-an-incident">15. How would you safely let an agent remediate an incident?<a class="headerlink" href="#15-how-would-you-safely-let-an-agent-remediate-an-incident" title="Permanent link">&para;</a></h3>
+<p>Begin read-only. Add narrowly scoped, reversible operations only after evaluation
+and threat review. Require explicit human approval for high-impact actions,
+bound the target namespace/resources, log the proposed and executed changes, and
+verify the result with independent probes. Maintain a kill switch and a manual
+runbook.</p>
+<h3 id="16-how-do-you-distinguish-a-model-failure-from-a-tool-or-cluster-failure">16. How do you distinguish a model failure from a tool or cluster failure?<a class="headerlink" href="#16-how-do-you-distinguish-a-model-failure-from-a-tool-or-cluster-failure" title="Permanent link">&para;</a></h3>
+<p>Use the trace hierarchy and timestamps: model request/error spans, tool-call
+spans, agent orchestration spans, Kubernetes events, and application logs. Check
+whether the tool was invoked, what it returned, and whether the model completed
+afterward. Correlation is useful, but verify the causal sequence rather than
+inferring it from a single error count.</p>
+<h3 id="17-what-would-you-do-if-an-agent-rollout-never-completes">17. What would you do if an agent rollout never completes?<a class="headerlink" href="#17-what-would-you-do-if-an-agent-rollout-never-completes" title="Permanent link">&para;</a></h3>
+<p>Inspect rollout status, old/new ReplicaSets, pod events, readiness probes, image
+pulls, Secret/config references, resource pressure, and controller logs. Avoid
+serial long waits that hide the underlying pod error; inspect one representative
+pod and the Deployment's events first.</p>
+<h3 id="18-how-should-the-team-handle-a-model-provider-outage">18. How should the team handle a model-provider outage?<a class="headerlink" href="#18-how-should-the-team-handle-a-model-provider-outage" title="Permanent link">&para;</a></h3>
+<p>Define the user-facing degraded behavior: bounded retries with backoff, request
+timeouts, concurrency and rate limits, clear errors, queue limits, and fallback
+only to an approved model with compatible behavior. Avoid retry storms. Decide
+whether non-AI functionality can continue and communicate the incident through
+normal service operations.</p>
+<h2 id="observability-and-opentelemetry">Observability and OpenTelemetry<a class="headerlink" href="#observability-and-opentelemetry" title="Permanent link">&para;</a></h2>
+<h3 id="19-why-opentelemetry-instead-of-instrumenting-each-backend-directly">19. Why OpenTelemetry instead of instrumenting each backend directly?<a class="headerlink" href="#19-why-opentelemetry-instead-of-instrumenting-each-backend-directly" title="Permanent link">&para;</a></h3>
+<p>OpenTelemetry provides a vendor-neutral instrumentation and transport layer.
+The gateway can enrich and route signals to Phoenix and Dynatrace without
+embedding backend-specific exporters in every agent. The trade-off is another
+service to operate and configure; collector availability, queueing, retries,
+memory, and exporter errors need monitoring.</p>
+<h3 id="20-trace-metric-and-log-when-do-you-use-each">20. Trace, metric, and log: when do you use each?<a class="headerlink" href="#20-trace-metric-and-log-when-do-you-use-each" title="Permanent link">&para;</a></h3>
+<p>Traces explain an individual request's distributed path and latency. Metrics
+provide aggregated, low-cardinality trends and alerting. Logs provide detailed
+event context. Link them with trace/request identifiers and keep attributes
+bounded so telemetry stays queryable and affordable.</p>
+<h3 id="21-what-is-otlp-and-where-does-it-flow-here">21. What is OTLP and where does it flow here?<a class="headerlink" href="#21-what-is-otlp-and-where-does-it-flow-here" title="Permanent link">&para;</a></h3>
+<p>OTLP is the OpenTelemetry protocol. kagent emits spans to the in-cluster
+Collector over gRPC or HTTP. The Collector enriches them with Kubernetes
+metadata, normalizes selected GenAI attributes, and exports to Phoenix and, if
+configured, Dynatrace.</p>
+<h3 id="22-what-does-the-collector-add-to-the-agent-spans">22. What does the Collector add to the agent spans?<a class="headerlink" href="#22-what-does-the-collector-add-to-the-agent-spans" title="Permanent link">&para;</a></h3>
+<p>The gateway uses processors such as Kubernetes attribute enrichment, resource
+detection, resource attributes, GenAI normalization, batching, and memory
+limiting. It stamps workshop identity attributes and maps framework attributes
+onto fields useful for querying. These transforms are workshop-specific; don't
+present them as automatic OpenTelemetry behavior.</p>
+<h3 id="23-what-are-gen_ai-attributes-for">23. What are <code>gen_ai.*</code> attributes for?<a class="headerlink" href="#23-what-are-gen_ai-attributes-for" title="Permanent link">&para;</a></h3>
+<p>They standardize model/provider, operation, token usage, and related GenAI
+information across instrumentation. They let an operator group model calls,
+measure latency and token consumption, and compare agent workflows. Verify which
+fields the actual SDK emits; semantic conventions and vendor mappings can
+change.</p>
+<h3 id="24-how-do-you-reduce-telemetry-cost-without-losing-diagnostic-value">24. How do you reduce telemetry cost without losing diagnostic value?<a class="headerlink" href="#24-how-do-you-reduce-telemetry-cost-without-losing-diagnostic-value" title="Permanent link">&para;</a></h3>
+<p>Start from questions the team needs to answer. Use appropriate sampling,
+retention, aggregation, and attribute limits; avoid high-cardinality or sensitive
+fields. Preserve error and representative slow traces, and validate that
+sampling still captures enough LLM/tool context for diagnosis and evaluation.</p>
+<h3 id="25-what-is-dangerous-about-capturing-prompts-and-completions">25. What is dangerous about capturing prompts and completions?<a class="headerlink" href="#25-what-is-dangerous-about-capturing-prompts-and-completions" title="Permanent link">&para;</a></h3>
+<p>They can contain customer data, source code, secrets, or regulated information.
+Treat span bodies as sensitive: redact before export, restrict read access, set
+retention and deletion controls, and document processor/region boundaries. Token
+counts and model metadata may still be useful when content capture is disabled.</p>
+<h3 id="26-how-would-you-troubleshoot-phoenix-has-traces-but-dynatrace-does-not">26. How would you troubleshoot “Phoenix has traces but Dynatrace does not”?<a class="headerlink" href="#26-how-would-you-troubleshoot-phoenix-has-traces-but-dynatrace-does-not" title="Permanent link">&para;</a></h3>
+<p>Check the Collector's Dynatrace exporter and logs, tenant <code>.live.</code> endpoint,
+ingest token scopes, Secret references, authentication responses, network egress,
+and exporter queue/retry state. Phoenix success proves receiver and one exporter
+path work; it does not prove the Dynatrace endpoint or token is valid.</p>
+<h2 id="agent-mcp-and-evaluation-questions">Agent, MCP, and Evaluation Questions<a class="headerlink" href="#agent-mcp-and-evaluation-questions" title="Permanent link">&para;</a></h2>
+<h3 id="27-what-is-an-ai-agent-in-this-design">27. What is an AI agent in this design?<a class="headerlink" href="#27-what-is-an-ai-agent-in-this-design" title="Permanent link">&para;</a></h3>
+<p>An agent combines instructions, a model, and access to tools, then uses a loop to
+decide and act. That loop introduces non-determinism, model/provider dependency,
+tool risk, and potentially unbounded cost. Operational controls must cover both
+the model call and the tool's authority.</p>
+<h3 id="28-what-is-mcp-and-why-is-it-used-for-github">28. What is MCP, and why is it used for GitHub?<a class="headerlink" href="#28-what-is-mcp-and-why-is-it-used-for-github" title="Permanent link">&para;</a></h3>
+<p>Model Context Protocol standardizes how an agent discovers and invokes tools.
+Here it separates GitHub tool serving from agent manifests and exposes repo,
+issue, and PR operations. It still needs explicit authentication, tool
+allowlisting, permission scoping, and audit; MCP is a protocol, not a security
+boundary by itself.</p>
+<h3 id="29-what-is-a2a-in-the-workshop">29. What is A2A in the workshop?<a class="headerlink" href="#29-what-is-a2a-in-the-workshop" title="Permanent link">&para;</a></h3>
+<p>A2A is the agent-to-agent/request interface used by the kagent controller for
+invocations. The sample smoke request sends a <code>message/send</code> JSON-RPC call to an
+agent endpoint. Be ready to describe where orchestration ends, where a delegated
+agent starts, and how tracing correlates the hops.</p>
+<h3 id="30-how-does-the-bmad-crew-divide-work">30. How does the BMAD crew divide work?<a class="headerlink" href="#30-how-does-the-bmad-crew-divide-work" title="Permanent link">&para;</a></h3>
+<p>The analyst clarifies needs, PM plans, architect decomposes/designs, developer
+implements, QA reviews, and orchestrator coordinates. The benefit is explicit
+roles and handoffs; the costs are more model calls, context transfer, latency,
+and failure opportunities. Measure whether each role improves quality enough to
+justify its cost.</p>
+<h3 id="31-how-do-you-evaluate-an-agent-beyond-the-demo-looked-good">31. How do you evaluate an agent beyond “the demo looked good”?<a class="headerlink" href="#31-how-do-you-evaluate-an-agent-beyond-the-demo-looked-good" title="Permanent link">&para;</a></h3>
+<p>Use representative tasks, a rubric, a ground-truth set where possible, and
+repeatable scoring. Track correctness/grounding, tool selection, task success,
+latency, tokens/cost, safety violations, and failure modes. Include human review
+for ambiguous or high-impact outputs and test regression cases before rollout.</p>
+<h3 id="32-what-do-relevance-faithfulness-and-hallucination-mean-here">32. What do relevance, faithfulness, and hallucination mean here?<a class="headerlink" href="#32-what-do-relevance-faithfulness-and-hallucination-mean-here" title="Permanent link">&para;</a></h3>
+<p>Relevance asks whether the answer addresses the request. Faithfulness asks
+whether it is supported by supplied evidence. Hallucination scoring looks for
+unsupported claims. Define rubrics and known examples; LLM-as-judge scores are
+signals, not objective truth, and should be calibrated against human review.</p>
+<h3 id="33-how-would-you-evaluate-a-diagnosis-agent">33. How would you evaluate a diagnosis agent?<a class="headerlink" href="#33-how-would-you-evaluate-a-diagnosis-agent" title="Permanent link">&para;</a></h3>
+<p>Inject isolated, known faults; give a symptom-only prompt; require evidence and
+root cause; score required signals and disallowed claims against an answer key;
+then clean up. Test distinct evidence sources such as logs, events, and
+termination reasons so the agent cannot pass by guessing a common diagnosis.</p>
+<h3 id="34-how-can-an-agent-loop-become-expensive-or-stuck">34. How can an agent loop become expensive or stuck?<a class="headerlink" href="#34-how-can-an-agent-loop-become-expensive-or-stuck" title="Permanent link">&para;</a></h3>
+<p>Repeated tool calls, retries, large context, excessive delegation, or a failure
+to recognize completion can multiply tokens and latency. Track task duration,
+tool/model call counts, retries, context size, and cost per successful task. Add
+step/time/token budgets, cancellation, and loop detection; evaluate quality after
+each optimization.</p>
+<h3 id="35-how-do-you-prevent-tool-descriptions-or-retrieved-content-from-becoming">35. How do you prevent tool descriptions or retrieved content from becoming<a class="headerlink" href="#35-how-do-you-prevent-tool-descriptions-or-retrieved-content-from-becoming" title="Permanent link">&para;</a></h3>
+<p>prompt-injection paths?</p>
+<p>Assume all external text can be adversarial. Separate instructions from data,
+constrain tools and inputs, validate outputs, keep secrets out of context, limit
+network egress, and require human approval for sensitive actions. A prompt alone
+is not an authorization control.</p>
+<h2 id="security-privacy-and-regulation">Security, Privacy, and Regulation<a class="headerlink" href="#security-privacy-and-regulation" title="Permanent link">&para;</a></h2>
+<h3 id="36-is-this-workshop-production-ready-for-a-regulated-enterprise">36. Is this workshop production-ready for a regulated enterprise?<a class="headerlink" href="#36-is-this-workshop-production-ready-for-a-regulated-enterprise" title="Permanent link">&para;</a></h3>
+<p>No. It is a learning lab. The deployed kagent controller reported
+<code>AUTH_MODE=unsecure</code>; the GitHub MCP receives a token in its workload
+environment; the local Kind cluster is not a high-availability production
+platform; and model/trace data boundaries require organization-specific review.
+State the gaps and describe how you would close them before a pilot.</p>
+<h3 id="37-what-is-the-least-privilege-model-for-the-github-integration">37. What is the least-privilege model for the GitHub integration?<a class="headerlink" href="#37-what-is-the-least-privilege-model-for-the-github-integration" title="Permanent link">&para;</a></h3>
+<p>Use a fine-grained token scoped to one repository with only the required content,
+issue, and PR permissions. Assign tools per agent, avoid organization/admin
+permissions, store the credential in an approved secret manager, rotate it, and
+audit usage. For high-assurance use, prefer short-lived workload identity if the
+provider supports it.</p>
+<h3 id="38-how-would-you-secure-kubernetes-tools-exposed-to-an-agent">38. How would you secure Kubernetes tools exposed to an agent?<a class="headerlink" href="#38-how-would-you-secure-kubernetes-tools-exposed-to-an-agent" title="Permanent link">&para;</a></h3>
+<p>Use a dedicated service account and minimal RBAC verbs/resources, isolate
+namespaces, constrain network egress, and deny privileged workloads. Separate
+read-only investigation from remediation capabilities. Add approval gates and
+audit logs for writes; verify permissions with negative tests, not only a
+successful read.</p>
+<h3 id="39-what-do-pod-security-admission-and-networkpolicy-protect-against">39. What do Pod Security Admission and NetworkPolicy protect against?<a class="headerlink" href="#39-what-do-pod-security-admission-and-networkpolicy-protect-against" title="Permanent link">&para;</a></h3>
+<p>Restricted Pod Security Admission limits unsafe pod settings such as root,
+privilege escalation, and capabilities. A default-deny NetworkPolicy constrains
+network paths, with explicit exceptions. Neither protects against every kernel,
+identity, application, or control-plane threat; confirm that the CNI enforces
+policies and test the actual boundaries.</p>
+<h3 id="40-what-does-tetragon-add">40. What does Tetragon add?<a class="headerlink" href="#40-what-does-tetragon-add" title="Permanent link">&para;</a></h3>
+<p>Tetragon uses eBPF to observe process and kernel events and can apply policies.
+In this lab it can detect sensitive-file access. Detection gives runtime
+evidence; enforcement has kernel and operational implications. Validate loaded
+policies and actions carefully, and do not assume that installing the DaemonSet
+means every policy is active.</p>
+<h3 id="41-what-data-governance-questions-would-you-ask-before-enabling-a-model">41. What data-governance questions would you ask before enabling a model?<a class="headerlink" href="#41-what-data-governance-questions-would-you-ask-before-enabling-a-model" title="Permanent link">&para;</a></h3>
+<p>Where is inference processed? Is data retained or used for training? What data
+classification is permitted? How are prompts and outputs logged? Who can access
+the traces? How long are they retained? Are subprocessors and regions approved?
+Can content capture be disabled or redacted? Record the answers in the service's
+data-flow and risk assessment.</p>
+<h3 id="42-how-do-you-manage-model-and-tool-credentials">42. How do you manage model and tool credentials?<a class="headerlink" href="#42-how-do-you-manage-model-and-tool-credentials" title="Permanent link">&para;</a></h3>
+<p>Use an approved secret manager or workload identity, inject credentials at
+runtime, limit scope and lifetime, rotate/revoke, and prevent values from
+appearing in Git, logs, images, traces, or shell history. Detect accidental
+exposure and define a revocation playbook. A Kubernetes Secret is encoded at
+rest by default unless cluster encryption and access controls are configured.</p>
+<h3 id="43-what-would-a-regulated-pilot-look-like">43. What would a regulated pilot look like?<a class="headerlink" href="#43-what-would-a-regulated-pilot-look-like" title="Permanent link">&para;</a></h3>
+<p>Start with synthetic or explicitly approved data in an isolated environment.
+Use an approved private model endpoint, no mutating tools, authenticated access,
+short-lived credentials, restricted egress, redacted telemetry, audit trails,
+human review, an owner, and an exit/rollback plan. Establish acceptance criteria
+with security, privacy, legal, and platform teams before expanding.</p>
+<h3 id="44-how-would-you-respond-to-a-prompt-injection-incident">44. How would you respond to a prompt-injection incident?<a class="headerlink" href="#44-how-would-you-respond-to-a-prompt-injection-incident" title="Permanent link">&para;</a></h3>
+<p>Contain the agent by disabling or narrowing tools and credentials; preserve audit
+and trace evidence without distributing sensitive content; determine which tools
+were invoked and what data/actions were affected; revoke exposed credentials;
+notify the incident/security owners; remediate the boundary; and add a regression
+test. Do not assume changing the system prompt alone resolves the vulnerability.</p>
+<h2 id="reliability-capacity-and-cost">Reliability, Capacity, and Cost<a class="headerlink" href="#reliability-capacity-and-cost" title="Permanent link">&para;</a></h2>
+<h3 id="45-what-are-the-main-dependencies-in-the-request-path">45. What are the main dependencies in the request path?<a class="headerlink" href="#45-what-are-the-main-dependencies-in-the-request-path" title="Permanent link">&para;</a></h3>
+<p>The UI/API, kagent controller/runtime, model endpoint, tool servers, Kubernetes
+API, Collector for telemetry, and optional trace backends. Identify which are
+critical to answering a request versus only to observing it. Decide how each
+failure degrades, times out, retries, or blocks execution.</p>
+<h3 id="46-how-would-you-define-an-slo-for-an-agent-service">46. How would you define an SLO for an agent service?<a class="headerlink" href="#46-how-would-you-define-an-slo-for-an-agent-service" title="Permanent link">&para;</a></h3>
+<p>Choose a user-visible outcome, such as successful completion of an approved
+task within a latency budget and without policy violations. Define the eligible
+request population and measurement window. Pair success/latency with quality and
+safety guardrails; a fast but incorrect answer is not an SLO success.</p>
+<h3 id="47-how-do-you-prevent-retries-from-amplifying-an-outage">47. How do you prevent retries from amplifying an outage?<a class="headerlink" href="#47-how-do-you-prevent-retries-from-amplifying-an-outage" title="Permanent link">&para;</a></h3>
+<p>Use bounded retries with exponential backoff and jitter, request deadlines,
+concurrency limits, circuit breaking where appropriate, and cancellation
+propagation. Distinguish retryable transport errors from invalid requests or
+policy denials. Measure retry volume and ensure one orchestrator does not cause
+multiple agents to retry independently without a shared budget.</p>
+<h3 id="48-how-do-you-estimate-and-control-model-cost">48. How do you estimate and control model cost?<a class="headerlink" href="#48-how-do-you-estimate-and-control-model-cost" title="Permanent link">&para;</a></h3>
+<p>Measure input/output tokens and calls per successful task by model and agent;
+apply current provider pricing to estimate cost. Set per-user or per-workflow
+budgets, cap steps and context, remove unused tools, and choose smaller models
+only after quality evaluation. Reconcile estimates against provider billing.</p>
+<h3 id="49-what-resource-limits-matter-for-this-lab">49. What resource limits matter for this lab?<a class="headerlink" href="#49-what-resource-limits-matter-for-this-lab" title="Permanent link">&para;</a></h3>
+<p>The full stack is recommended on a 4-core/16-GB Codespace. Operators, Tetragon,
+Phoenix, the Collector, kagent, and agent pods all consume resources. Set
+requests/limits, watch node pressure and scheduling events, and opt into the
+additional demo application only when capacity allows. The lab size is not a
+production capacity model.</p>
+<h3 id="50-what-is-your-disaster-recovery-story">50. What is your disaster-recovery story?<a class="headerlink" href="#50-what-is-your-disaster-recovery-story" title="Permanent link">&para;</a></h3>
+<p>The Kind cluster is disposable and its local persistent state is not a production
+backup strategy. Recreate it from versioned manifests and pinned dependencies;
+protect external configuration and credentials separately. For production,
+design backups for required state, test restore, define RPO/RTO, and ensure the
+model, MCP, and telemetry dependencies can be restored or replaced.</p>
+<h2 id="dynatrace-and-vendor-neutral-design">Dynatrace and Vendor-Neutral Design<a class="headerlink" href="#dynatrace-and-vendor-neutral-design" title="Permanent link">&para;</a></h2>
+<h3 id="51-how-does-the-design-avoid-hard-dependence-on-dynatrace">51. How does the design avoid hard dependence on Dynatrace?<a class="headerlink" href="#51-how-does-the-design-avoid-hard-dependence-on-dynatrace" title="Permanent link">&para;</a></h3>
+<p>Agents emit OTLP through an OpenTelemetry gateway; Phoenix is a local backend,
+and Dynatrace is a parallel optional exporter. The core agent, Kubernetes, and
+Phoenix learning path works without tenant credentials. Dynatrace-specific
+Operator, DQL, <code>dtctl</code>, and <code>dt-evals</code> assets remain optional integrations.</p>
+<h3 id="52-what-is-the-difference-between-the-dynatrace-urls-and-tokens">52. What is the difference between the Dynatrace URLs and tokens?<a class="headerlink" href="#52-what-is-the-difference-between-the-dynatrace-urls-and-tokens" title="Permanent link">&para;</a></h3>
+<p>The <code>.live.</code> tenant endpoint is used for OTLP ingest and the Operator API. The
+<code>.apps.</code> platform endpoint is used by platform tooling such as <code>dtctl</code>. Ingest,
+operator/evaluation, and platform tokens have different scope requirements.
+Keep them separate and follow the current secret contract rather than reusing an
+ingest-only token for Kubernetes monitoring.</p>
+<h3 id="53-how-would-you-prove-the-dynatrace-path-works">53. How would you prove the Dynatrace path works?<a class="headerlink" href="#53-how-would-you-prove-the-dynatrace-path-works" title="Permanent link">&para;</a></h3>
+<p>Verify the OTLP Secret and endpoint, Collector exporter logs, accepted/exported
+signals, and a known trace in the tenant. Separately verify DynaKube/ActiveGate
+conditions and Kubernetes entities in Smartscape. A healthy Collector pod alone
+does not prove tenant ingestion or topology integration.</p>
+<h3 id="54-how-do-you-avoid-locking-the-design-to-one-observability-vendor">54. How do you avoid locking the design to one observability vendor?<a class="headerlink" href="#54-how-do-you-avoid-locking-the-design-to-one-observability-vendor" title="Permanent link">&para;</a></h3>
+<p>Keep instrumentation and resource attributes in OpenTelemetry, avoid embedding
+backend-specific APIs in agents, and isolate vendor-specific queries/dashboards
+behind separate assets. Document semantic-convention mappings and test them
+against each backend. Vendor-neutral transport does not make every query or
+evaluation artifact portable.</p>
+<h2 id="behavioral-and-trade-off-questions">Behavioral and Trade-Off Questions<a class="headerlink" href="#behavioral-and-trade-off-questions" title="Permanent link">&para;</a></h2>
+<h3 id="55-why-did-you-build-this-workshop">55. Why did you build this workshop?<a class="headerlink" href="#55-why-did-you-build-this-workshop" title="Permanent link">&para;</a></h3>
+<p>Explain the learning objective in terms of operating agents: make tool/model
+activity observable, test diagnosis against known faults, and understand cost
+and safety controls. Avoid presenting “AI” as the goal by itself; connect it to
+an operational problem and what evidence you wanted to gather.</p>
+<h3 id="56-what-was-your-most-important-design-trade-off">56. What was your most important design trade-off?<a class="headerlink" href="#56-what-was-your-most-important-design-trade-off" title="Permanent link">&para;</a></h3>
+<p>Possible examples: Kind simplicity versus production realism; a shared Collector
+versus per-agent exporters; multi-agent specialization versus added token cost;
+trace content versus privacy; hosted proxy convenience versus provider control.
+State the alternatives, the chosen constraint, and what evidence would make you
+change the decision.</p>
+<h3 id="57-what-would-you-improve-first">57. What would you improve first?<a class="headerlink" href="#57-what-would-you-improve-first" title="Permanent link">&para;</a></h3>
+<p>Prioritize by risk, not novelty. A credible answer is: replace unauthenticated
+runtime access; integrate workload identity/secret management; restrict and test
+tool RBAC; document data residency/retention; add policy gates; then define
+quality and operational SLOs. Explain which one you would do first for the
+specific organization.</p>
+<h3 id="58-how-did-you-know-the-fix-worked">58. How did you know the fix worked?<a class="headerlink" href="#58-how-did-you-know-the-fix-worked" title="Permanent link">&para;</a></h3>
+<p>Describe the before/after evidence and a regression check: the missing Secret was
+reproduced from an unset prefix; the shell behavior was corrected; the secret
+script completed with no explicit prefix; Kubernetes showed the Secret; all
+seven agent resources became Ready; a smoke call completed; Phoenix contained
+agent and LLM spans. Distinguish these checks from the unconfigured Dynatrace
+path.</p>
+<h3 id="59-what-would-you-do-if-compliance-rejects-the-model-provider">59. What would you do if compliance rejects the model provider?<a class="headerlink" href="#59-what-would-you-do-if-compliance-rejects-the-model-provider" title="Permanent link">&para;</a></h3>
+<p>Do not route around the decision. Determine the approved deployment options
+(private endpoint, on-prem model, or no model for the workload), data and
+retention constraints, and whether the use case remains viable. Demonstrate the
+vendor-neutral telemetry path with synthetic data while the approved model
+integration is reviewed.</p>
+<h3 id="60-how-do-you-communicate-uncertainty-in-an-agents-answer">60. How do you communicate uncertainty in an agent's answer?<a class="headerlink" href="#60-how-do-you-communicate-uncertainty-in-an-agents-answer" title="Permanent link">&para;</a></h3>
+<p>Require evidence references and explicit unknowns. Separate observed facts from
+hypotheses, ask the agent to state confidence and missing evidence, and route
+high-impact decisions to a human. Measure calibration and false confidence in
+evaluations rather than treating fluent wording as reliability.</p>
+<h3 id="61-how-would-you-convince-a-skeptical-sre-team-to-try-this">61. How would you convince a skeptical SRE team to try this?<a class="headerlink" href="#61-how-would-you-convince-a-skeptical-sre-team-to-try-this" title="Permanent link">&para;</a></h3>
+<p>Propose a bounded, opt-in experiment with synthetic or low-risk tasks, read-only
+permissions, a human operator in the loop, explicit success criteria, and a
+rollback plan. Compare with the existing runbook process and publish failures as
+well as successes. Do not ask the team to trust an opaque agent or replace
+on-call judgment.</p>
+<h2 id="a-repeatable-answer-structure">A Repeatable Answer Structure<a class="headerlink" href="#a-repeatable-answer-structure" title="Permanent link">&para;</a></h2>
+<p>For architecture or incident questions, organize answers in this order:</p>
+<ol>
+<li><strong>Goal and scope:</strong> What user or operational problem are you addressing?</li>
+<li><strong>Evidence:</strong> What did you observe (status, event, log, span, metric)?</li>
+<li><strong>Reasoning:</strong> How did the evidence narrow the cause or design choice?</li>
+<li><strong>Action and safety:</strong> What did you change, and what was the blast radius?</li>
+<li><strong>Verification:</strong> Which independent checks proved the outcome?</li>
+<li><strong>Trade-off and next step:</strong> What remains unproven, and what would you improve?</li>
+</ol>
+<p>For behavioral questions, use STAR (Situation, Task, Action, Result), then add
+what you learned. Keep the Result measurable where possible and label lab results
+as lab results.</p>
+<h2 id="questions-to-ask-the-interviewer">Questions to Ask the Interviewer<a class="headerlink" href="#questions-to-ask-the-interviewer" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Which agent or automation workloads are currently approved, and which remain
+  experimental?</li>
+<li>What are the organization's model-provider, data-residency, and prompt-retention
+  requirements?</li>
+<li>How are workload identity, tool authorization, and human approvals handled for
+  automation that can mutate systems?</li>
+<li>What reliability and quality measures would need to pass before a pilot could
+  expand?</li>
+<li>Which observability platform is standard, and are OpenTelemetry pipelines
+  already available?</li>
+<li>Who owns model, prompt, evaluation, and incident-response changes after launch?</li>
+</ul>
+<p>These questions demonstrate that you understand enterprise adoption as a joint
+security, platform, SRE, and governance problem rather than a chart installation.</p>
+<h2 id="practice-plan">Practice Plan<a class="headerlink" href="#practice-plan" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Deliver the project story in 60 seconds, then again in 3 minutes with an
+   architecture sketch.</li>
+<li>Reproduce the missing-Secret incident from evidence, without relying on notes.</li>
+<li>Answer questions 19–26 by drawing the trace path and naming failure points.</li>
+<li>Practice questions 36–44 as a security review; explicitly say what the lab
+   does not provide.</li>
+<li>Pick one scenario and explain its symptom, evidence channel, diagnosis, safe
+   remediation, verification, and cleanup.</li>
+<li>Ask a peer to challenge one design decision and defend it with evidence, not
+   preference.</li>
+</ol>
+<p>Continue with the <a href="../replicate-workshop/">replication and self-study guide</a> for
+the architecture, source repository map, setup instructions, and operational
+checklists.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.code.annotate", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
