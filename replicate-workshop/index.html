@@ -696,6 +696,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#16-after-the-workshop-your-study-kit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. After the Workshop: Your Study Kit
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. After the Workshop: Your Study Kit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-reading-and-source-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core reading and source files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynatrace-json-study-assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dynatrace JSON study assets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#independent-practice-without-the-workshop-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Independent practice without the workshop host
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1750,6 +1800,82 @@ work through modules 01–07. The <a href="../run-of-show/">Run of show</a> is t
 facilitated path; this page is the longer self-study and replication reference.
 For interview practice based on this lab, use the
 <a href="../interview-prep/">SRE interview question bank</a>.</p>
+<h2 id="16-after-the-workshop-your-study-kit">16. After the Workshop: Your Study Kit<a class="headerlink" href="#16-after-the-workshop-your-study-kit" title="Permanent link">&para;</a></h2>
+<p>The repository is the durable reference; the running Codespace is only one
+temporary environment. Keep the link to your fork and record the commit you
+studied. The Codespace's Kind cluster, local Phoenix database, and generated
+<code>.workshop-llm.env</code> belong to that environment and may disappear when the
+Codespace is deleted. Workshop room passwords and dispensed model keys can
+expire or be revoked. Dynatrace access depends on the tenant and tokens remaining
+available. Do not copy credentials into your notes; keep sanitized commands and
+architecture notes instead.</p>
+<h3 id="core-reading-and-source-files">Core reading and source files<a class="headerlink" href="#core-reading-and-source-files" title="Permanent link">&para;</a></h3>
+<p>Use this order when revisiting the material without the live workshop:</p>
+<ol>
+<li><a href="../">Workshop modules 00–07</a> for the narrative and exercise sequence.</li>
+<li><a href="../kagent-explainer/">kagent in 5 minutes</a> for the runtime mental model.</li>
+<li><a href="../02-agents-mcp/">Agent installation guide</a>, then inspect the source
+   manifests: <code>agents/sre/sre-agent.yaml</code>, <code>agents/bmad-crew/</code>, and
+   <code>agents/mcp/</code>.</li>
+<li>Follow <code>.devcontainer/postCreate.sh</code> into <code>cluster/install.sh</code>, then trace a
+   request through <code>cluster/otel/collector-gateway.yaml</code> to Phoenix.</li>
+<li>Use <code>scenarios/README.md</code> and the per-scenario prompts/answer keys to practice
+   evidence-based diagnosis without needing Dynatrace.</li>
+<li>Use the <a href="../interview-prep/">SRE interview question bank</a> to practice explaining
+   the design, limitations, and troubleshooting story.</li>
+</ol>
+<p>The setup, code, and learning flow are linked from this repository; they are not
+all copied into the guide itself. External projects continue to evolve, so check
+the repo's pinned versions and upstream release notes before recreating the lab
+later.</p>
+<h3 id="dynatrace-json-study-assets">Dynatrace JSON study assets<a class="headerlink" href="#dynatrace-json-study-assets" title="Permanent link">&para;</a></h3>
+<p>The launchpad export you supplied is included as a sanitized, reusable
+<a href="../assets/dynatrace-ai-agent-workshop.dashboard.json">Dynatrace AI Agent Workshop dashboard JSON</a>.
+It contains no tenant values, passwords, or tokens. It is an overview dashboard,
+not an installer: Kubernetes resources, kagent Agents, the Collector, security
+controls, and installation logic remain in YAML manifests and scripts. The
+repository also includes four Dynatrace optimization JSON exports, linked from
+<a href="../07-optimize/">07 — Optimize</a>:</p>
+<ul>
+<li><a href="../assets/optimization/ai-agent-optimization.dashboard.json">AI Agent Optimization dashboard</a>
+  — dashboard import for token usage and agent-workflow analysis.</li>
+<li><a href="../assets/optimization/ai-agent-workflow-steps.notebook.json">AI Agent Workflow Steps notebook</a>
+  — inspect an agent run step by step.</li>
+<li><a href="../assets/optimization/ai-agent-optimization-before-after.notebook.json">AI Agent Optimization Before/After notebook</a>
+  — follow the cost-optimization comparison.</li>
+<li><a href="../assets/optimization/ai-agent-optimization.workflow.json">AI Agent Optimization workflow</a>
+  — workflow export used with the Dynatrace optimization path.</li>
+</ul>
+<p>These are Dynatrace-specific import assets, not prerequisites for running agents
+or studying traces in Phoenix. The corresponding source YAML and deployment
+instructions are under
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/tree/main/cluster/dynatrace/optimization"><code>cluster/dynatrace/optimization/</code></a>.
+They may contain <code>${WORKSHOP_PREFIX}</code> placeholders in the published repo; render
+or replace them with your own attendee prefix before importing. A working
+Dynatrace tenant and the appropriate platform permissions are needed to use
+them.</p>
+<h3 id="independent-practice-without-the-workshop-host">Independent practice without the workshop host<a class="headerlink" href="#independent-practice-without-the-workshop-host" title="Permanent link">&para;</a></h3>
+<p>To repeat the core learning loop after the hosted lab ends:</p>
+<ol>
+<li>Fork or clone this repository and follow the vendor-neutral profile in this
+   guide.</li>
+<li>Use your own approved model endpoint and credential, or use a local/private
+   endpoint; the workshop's room-password proxy is not a permanent personal
+   service.</li>
+<li>Install Kind, kagent, the OpenTelemetry gateway, and Phoenix. Keep Dynatrace,
+   Tetragon, and the optional demo app disabled until you specifically need them.</li>
+<li>Deploy the agents, send the read-only SRE smoke request, and verify
+   <code>AGENT</code>, <code>LLM</code>, and <code>TOOL</code> spans in Phoenix.</li>
+<li>Inject one isolated scenario, diagnose it from Kubernetes evidence, compare
+   with its answer key, and clean it up.</li>
+<li>Add Dynatrace later if you have a tenant. Verify an actual trace arrives
+   before treating the dashboard or JSON imports as usable.</li>
+</ol>
+<p>The Sympozium Todo repository can be the BMAD team's GitHub target, but it is not
+a prebuilt application deployment. If you want to practice observing a running
+application, first make it runnable and containerized or choose an app repo that
+already has a deployment path. Scenario 12 uses the separate, optional
+OpenTelemetry Demo Light app.</p>
 
 
 

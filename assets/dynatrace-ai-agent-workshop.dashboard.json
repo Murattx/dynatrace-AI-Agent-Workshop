@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "icon": "default",
+  "background": "default",
+  "containerList": {
+    "containers": [
+      {
+        "blocks": [
+          {
+            "id": "ba3958a8-2cac-4232-9f6b-0b108dfef75b",
+            "type": "markdown",
+            "properties": { "expanded": true },
+            "content": "# Dynatrace AI Agent Workshop\n\n> Build, secure, observe, evaluate, and cost-optimize a multi-agent AI platform on Kubernetes. This launchpad summarizes the lab; it does not install or recreate the Kubernetes platform.\n\n## Workshop path\n\n1. Create a GitHub Codespace and bootstrap the two-node Kind cluster and platform.\n2. Configure model access and run `bash agents/install-agents.sh` to deploy the SRE agent, BMAD crew, and GitHub MCP.\n3. Secure the lab with the repository's Agent Sandbox baseline and optional Tetragon runtime monitoring.\n4. Send agent telemetry through the OpenTelemetry gateway to Phoenix and, when configured, this Dynatrace tenant.\n5. Inject an isolated scenario, ask the SRE agent to investigate, compare its answer with the scenario key, and clean up.\n6. Evaluate traces in Phoenix or optionally use `dt-evals` with Dynatrace.\n7. Use the optimization assets only after traces are arriving and scoped to your attendee prefix.\n\n## Configure your environment\n\nSet credentials as Codespaces secrets or in an approved secret manager. Never put live tokens, room passwords, model keys, or tenant-specific credentials in this dashboard JSON. The full Dynatrace path uses `DT_TENANT_URL`, `DT_API_TOKEN`, `DYNATRACE_API_TOKEN`, and, for `dtctl`, `DT_PLATFORM_TOKEN`. Model access uses `WORKSHOP_ROOM_PASSWORD` plus `WORKSHOP_DISPENSER_URL`, or your own approved model endpoint and key. BMAD GitHub write access uses a fine-grained `GH_PAT` scoped to one repository and `GH_DEMO_REPO` in `owner/repo` form.\n\n## Attendee scope\n\nTenant URL: `${DT_TENANT_URL}`\n\nAttendee prefix: `${WORKSHOP_PREFIX}`\n\nUse `workshop.attendee == \"${WORKSHOP_PREFIX}\"` to scope queries on a shared tenant. The SRE service name is `${WORKSHOP_PREFIX}-sre-agent`.\n\n## Optimization assets\n\nThe repository contains separate dashboard, notebook, and workflow JSON/YAML assets under `docs/assets/optimization/` and `cluster/dynatrace/optimization/`. Import those separately after telemetry is verified. This launchpad is not a single-file export of the entire workshop.\n\n## Source and setup\n\nWorkshop repository: https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop\n\nReplication guide: https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/docs/replicate-workshop.md\n\nInterview study guide: https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/docs/interview-prep.md\n\nThe current Kind config has a control-plane node and a worker node. Platform installation happens in `postCreate`; agent resources are a separate Phase 3 installation."
+          },
+          {
+            "id": "d5ce426c-8655-4f97-97c8-bb7d9d28ff58",
+            "type": "links",
+            "properties": { "expanded": true },
+            "appearance": "list",
+            "contentType": "static",
+            "content": [
+              {
+                "id": "e213202f-9a49-4b88-8280-3fdea8dd9f36",
+                "type": "app",
+                "title": "Kubernetes",
+                "action": { "type": "openApp", "appId": "dynatrace.kubernetes" },
+                "icon": "/platform/app-engine/registry/v1/app-icons/dynatrace.kubernetes?appVersion=1.46.0",
+                "categoryId": "apps",
+                "status": "accessible"
+              },
+              {
+                "id": "29908fc4-097c-4816-9f89-feeaf8b8f847",
+                "type": "app",
+                "title": "AI Observability",
+                "action": { "type": "openApp", "appId": "dynatrace.genai.observability" },
+                "icon": "/platform/app-engine/registry/v1/app-icons/dynatrace.genai.observability?appVersion=2.13.0",
+                "categoryId": "apps",
+                "status": "accessible"
+              },
+              {
+                "id": "992d7f72-7f61-45d3-a638-569d1213ed64",
+                "type": "app",
+                "title": "Services",
+                "action": { "type": "openApp", "appId": "dynatrace.services" },
+                "icon": "/platform/app-engine/registry/v1/app-icons/dynatrace.services?appVersion=1.64.1",
+                "categoryId": "apps",
+                "status": "accessible"
+              },
+              {
+                "id": "df3f56cf-8de4-4b19-be13-bca2be06a26f",
+                "type": "app",
+                "title": "Distributed Tracing",
+                "action": { "type": "openApp", "appId": "dynatrace.distributedtracing" },
+                "icon": "/platform/app-engine/registry/v1/app-icons/dynatrace.distributedtracing?appVersion=1.49.0",
+                "categoryId": "apps",
+                "status": "accessible"
+              },
+              {
+                "id": "d2a9349d-9676-42d7-914f-9e3b693fcd74",
+                "type": "app",
+                "title": "Notebooks",
+                "action": { "type": "openApp", "appId": "dynatrace.notebooks" },
+                "icon": "/platform/app-engine/registry/v1/app-icons/dynatrace.notebooks?appVersion=1.350.2",
+                "categoryId": "apps",
+                "status": "accessible"
+              },
+              {
+                "id": "603ebedc-d27d-4996-97db-4410e2dc797d",
+                "type": "app",
+                "title": "Workflows",
+                "action": { "type": "openApp", "appId": "dynatrace.automations" },
+                "icon": "/platform/app-engine/registry/v1/app-icons/dynatrace.automations?appVersion=1.3486.3",
+                "categoryId": "apps",
+                "status": "accessible"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
