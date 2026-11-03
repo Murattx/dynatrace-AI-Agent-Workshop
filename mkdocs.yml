@@ -57,6 +57,7 @@ nav:
   - Home: index.md
   - "Start the benchmark": start-benchmark.md
   - "Replicate the workshop": replicate-workshop.md
+  - "Interview preparation": interview-prep.md
   - "kagent in 5 minutes": kagent-explainer.md
   - "Run of show (guided demo)": run-of-show.md
   - "00 — Setup (Codespace)": 00-setup.md

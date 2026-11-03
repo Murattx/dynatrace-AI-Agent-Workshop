@@ -538,3 +538,5 @@ when they are no longer needed.
 For the guided module sequence, continue with [00 — Setup](00-setup.md), then
 work through modules 01–07. The [Run of show](run-of-show.md) is the shorter
 facilitated path; this page is the longer self-study and replication reference.
+For interview practice based on this lab, use the
+[SRE interview question bank](interview-prep.md).

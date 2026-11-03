@@ -47,6 +47,10 @@ the **[replication and self-study guide](replicate-workshop.md)** for architectu
 repository map, vendor-neutral setup, optional integrations, verification, and
 teardown.
 
+Preparing to discuss the project in an interview? Use the
+**[SRE interview question bank](interview-prep.md)** for technical prompts,
+answer frameworks, incident stories, and enterprise security trade-offs.
+
 New to kagent? Read **[kagent in 5 minutes](kagent-explainer.md)** for the mental
 model, then head to **[00 — Setup (Codespace)](00-setup.md)** to boot your
 environment. The modules run in order:
