@@ -1,0 +1,1248 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Hands-on workshop — cost-efficient AI agent workflows with BMAD, kagent, Kubernetes, and Dynatrace AI Observability.">
+      
+      
+        <meta name="author" content="Henrik Rexed">
+      
+      
+      
+        <link rel="prev" href="../05-diagnose/">
+      
+      
+        <link rel="next" href="../07-optimize/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>06 — Evaluate (Phoenix + dt-evals) - Dynatrace AI Agent Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#06-evaluate-phoenix" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dynatrace AI Agent Workshop" class="md-header__button md-logo" aria-label="Dynatrace AI Agent Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dynatrace AI Agent Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              06 — Evaluate (Phoenix + dt-evals)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    henrikrexed/dynatrace-AI-Agent-Workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dynatrace AI Agent Workshop" class="md-nav__button md-logo" aria-label="Dynatrace AI Agent Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dynatrace AI Agent Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    henrikrexed/dynatrace-AI-Agent-Workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../start-benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start the benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../replicate-workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Replicate the workshop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kagent-explainer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kagent in 5 minutes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run-of-show/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run of show (guided demo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00 — Setup (Codespace)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-platform-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 — Platform install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-agents-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 — Agents & MCP wiring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-secure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 — Secure agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-observe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 — Observe with Dynatrace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 — Diagnose a broken cluster
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 — Evaluate (Phoenix + dt-evals)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 — Evaluate (Phoenix + dt-evals)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#part-a-phoenix-create-an-evaluation-in-the-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part A — Phoenix: create an evaluation in the UI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part A — Phoenix: create an evaluation in the UI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-and-run-an-llm-as-a-judge-no-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create and run an LLM-as-a-judge (no code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-the-scores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read the scores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script-the-same-judge-instead-optional-advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Script the same judge instead (optional / advanced)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-b-dt-evals-scores-inside-dynatrace-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part B — dt-evals: scores inside Dynatrace (optional)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part B — dt-evals: scores inside Dynatrace (optional)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-config-is-the-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The config is the evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-c-grade-a-diagnosis-against-the-answer-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part C — grade a diagnosis against the answer key
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part C — grade a diagnosis against the answer key">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deterministic-grade-offline-no-key-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deterministic grade (offline, no key) — recommended
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#author-a-custom-evaluator-in-dynatrace-dt-evals-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Author a custom evaluator in Dynatrace (dt-evals — optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-measure-for-these-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to measure for these agents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-achieved-acceptance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you achieved (acceptance)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-optimize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 — Optimize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host runbook (facilitator)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="06-evaluate-phoenix">06 — Evaluate (Phoenix)<a class="headerlink" href="#06-evaluate-phoenix" title="Permanent link">&para;</a></h1>
+<p>Observability (module 04) tells you <em>what the agent did</em> and <em>what it cost</em>. It
+does <strong>not</strong> tell you whether the answer was correct, grounded, or useful. That's
+<strong>evaluation</strong> — scoring agent outputs against expectations — and it's the step
+most teams skip, which is why their agents quietly regress.</p>
+<p>This module's evals read the <strong>same <code>gen_ai.*</code> spans</strong> the OTel gateway already
+produces (module 02/04) — you don't re-run the agents to grade them, you grade the
+traces they already emitted. In this workshop you <strong>create your evaluation in Arize
+Phoenix</strong>:</p>
+<ul>
+<li><strong>Phoenix (Arize)</strong> — the <strong>recommended path</strong>. An interactive trace + eval UI,
+  already running from module 01, where you <strong>build and run an LLM-as-a-judge
+  evaluation entirely in the web UI</strong> (no code) using the preconfigured DeepSeek
+  judge. This is <em>the</em> way you create an evaluation here.</li>
+<li><strong>dt-evals</strong> — a brief <strong>alternative</strong> for teams that want eval scores to land
+  <strong>inside Dynatrace</strong> as bizevents, next to the rest of their telemetry. In this
+  workshop it is <strong>being replaced by Phoenix</strong> — kept below as a short reference,
+  not the main event.</li>
+</ul>
+<p>Everything for this module lives under
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/tree/main/evals"><code>evals/</code></a>.
+Both paths reuse the cost-efficient workshop judge — <strong>DeepSeek</strong> (<code>deepseek-chat</code>),
+the same model that powers the agents — set once in <code>evals/.env</code>
+(copy from <code>evals/.env.example</code>).</p>
+<div class="admonition warning">
+<p class="admonition-title">Generate traffic first</p>
+<p>Evals score real traces. Drive the SRE agent or a BMAD task (module 02)
+<strong>before</strong> running either path, so there are spans to grade.</p>
+</div>
+<hr />
+<h2 id="part-a-phoenix-create-an-evaluation-in-the-ui">Part A — Phoenix: create an evaluation in the UI<a class="headerlink" href="#part-a-phoenix-create-an-evaluation-in-the-ui" title="Permanent link">&para;</a></h2>
+<p>Phoenix is <strong>how you create an evaluation in this workshop</strong>: you build <strong>and</strong> run
+an LLM-as-a-judge evaluation entirely in the web UI — no code — scored by the same
+<strong>DeepSeek</strong> model that powers the agents. Open Phoenix on the forwarded Codespace
+port <strong>6006</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>phoenix<span class="w"> </span>port-forward<span class="w"> </span>svc/phoenix<span class="w"> </span><span class="m">6006</span>:6006
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># then open http://localhost:6006</span>
+</code></pre></div>
+<p>Every agent run shows up as an LLM trace: prompt, response, tool spans, token
+counts. Click a span to see its <code>gen_ai.*</code> attributes. Module 04's gateway now
+also surfaces each LLM call's prompt and completion as OpenInference
+<code>input.value</code> / <code>output.value</code>, so the <strong>Input</strong> and <strong>Output</strong> are visible right
+in the trace view — which is exactly what the judge reads.</p>
+<div class="admonition tip">
+<p class="admonition-title">The DeepSeek judge is already wired</p>
+<p>The workshop's Phoenix is preconfigured for DeepSeek — the judge key and
+endpoint are injected from the model proxy your <code>WORKSHOP_ROOM_PASSWORD</code>
+unlocked (no personal DeepSeek key anywhere), and
+<code>PHOENIX_ALLOWED_PROVIDERS=DEEPSEEK</code> restricts the model menu — so <strong>DeepSeek
+is the only — and obvious — choice</strong> everywhere you pick a judge model. You
+never hand-enter a key. If your Phoenix is <em>not</em> preconfigured, re-run
+<code>bash .devcontainer/bootstrap/dispense-llm.sh</code> (then restart Phoenix) to
+refresh the dispensed proxy credentials.</p>
+</div>
+<h3 id="create-and-run-an-llm-as-a-judge-no-code">Create and run an LLM-as-a-judge (no code)<a class="headerlink" href="#create-and-run-an-llm-as-a-judge-no-code" title="Permanent link">&para;</a></h3>
+<p>You'll score the SRE-agent traces from your last run against a judge classifier —
+start with <strong>hallucination</strong> (is the answer grounded in the tool output it was
+given?) or <strong>relevance</strong> (does it actually answer the question?).</p>
+<ol>
+<li>
+<p><strong>Pick the traces.</strong> Open your project's <strong>Traces</strong> table and select the
+   SRE-agent runs you want to grade. Filter to the LLM spans so each example
+   carries a clean question → answer pair — paste this into the Traces filter bar:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>span_kind == 'LLM' and attributes['service.name'] == '${WORKSHOP_PREFIX}-sre-agent'
+</code></pre></div>
+<p><code>${WORKSHOP_PREFIX}</code> is the prefix you set at Codespace create (<code>echo
+$WORKSHOP_PREFIX</code>); on the shared workshop tenant it is what makes the SRE
+agent's spans arrive as <code>${WORKSHOP_PREFIX}-sre-agent</code>. Phoenix itself is
+per-attendee (local), so the <code>span_kind == 'LLM'</code> clause is the one that
+matters most here — it drops the tool/chain spans and leaves clean
+question → answer pairs — but keeping the service-name clause makes the same
+filter copy-paste-identical to the Dynatrace queries later in this module.
+2. <strong>Capture them as a dataset.</strong> Use <strong>Add to Dataset</strong> to save the selected
+   spans as a dataset — each example keeps the span's <strong>Input</strong> (the question) and
+   <strong>Output</strong> (the agent's answer). This is the set the judge will score.
+3. <strong>Add an LLM evaluator.</strong> Open the new dataset → <strong>Evaluators</strong> tab →
+   <strong>Add evaluator</strong> → <strong>LLM</strong>. Phoenix opens it in the <strong>Playground</strong>:
+ - <strong>Model:</strong> DeepSeek (the only provider in the menu — already keyed).
+ - <strong>Template:</strong> write the judge prompt, e.g. <em>“You are grading whether the
+   ANSWER is grounded in the provided CONTEXT/question. Reply with a single
+   label: <code>hallucinated</code> or <code>factual</code>.”</em> (or a relevance rubric:
+   <code>relevant</code> / <code>irrelevant</code>).
+ - <strong>Input mapping:</strong> map the template's <code>{question}</code> / <code>{answer}</code> variables
+   to the dataset's <strong>input</strong> / <strong>output</strong> fields.
+ - <strong>Test</strong> it on one example to see the label + explanation, then <strong>Save</strong>.
+4. <strong>Run it.</strong> From the dataset, <strong>Run</strong> an experiment in the Playground. Phoenix
+   calls the DeepSeek judge <strong>server-side</strong> over every example — no local runtime.</p>
+</li>
+</ol>
+<h3 id="read-the-scores">Read the scores<a class="headerlink" href="#read-the-scores" title="Permanent link">&para;</a></h3>
+<p>The experiment's results table gains one <strong>label / score column per evaluator</strong>.
+Sort by it to surface the weakest answers, and click any row to read the judge's
+<strong>label, score, and explanation</strong> next to that example's input and output. That is
+your end-to-end eval — created, run, and read entirely in the Phoenix UI: fast,
+visual, and the recommended way to grade these agents.</p>
+<h3 id="script-the-same-judge-instead-optional-advanced">Script the same judge instead (optional / advanced)<a class="headerlink" href="#script-the-same-judge-instead-optional-advanced" title="Permanent link">&para;</a></h3>
+<p>The UI flow above is the fast path. The repo also ships a small, version-pinned
+script that builds the same two classifiers (<strong>hallucination</strong> + <strong>relevance</strong>)
+from code — handy for CI, for grading the <strong>live</strong> spans in place, or when you
+have no traffic yet:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>evals<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>sync
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Bundled sample dataset — no cluster/traffic needed (just a judge key):</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>phoenix/run_phoenix_eval.py
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Live spans pulled from Phoenix, scores logged back onto the traces:</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>phoenix/run_phoenix_eval.py<span class="w"> </span>--from-phoenix
+</code></pre></div>
+<p>It prints a per-metric summary, writes <code>phoenix/out/phoenix_eval_results.csv</code>,
+and (with <code>--from-phoenix</code>) annotates the originating spans so the labels show up
+on the traces in the UI. Details: <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/evals/phoenix/README.md"><code>evals/phoenix/README.md</code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title"><code>--from-phoenix</code> needs message content on the spans</p>
+<p>The live path maps prompt/response content out of your spans in every common
+shape our agents emit — OTel GenAI semconv (<code>gen_ai.input.messages</code>, indexed
+<code>gen_ai.prompt.N.content</code> / <code>gen_ai.completion.N.content</code>, or <code>gen_ai.*</code>
+log-events) as well as OpenInference (<code>input.value</code> / <code>output.value</code> — the
+pair the gateway now also populates). If it still finds no content, it prints
+exactly which <code>attributes.*</code> were present so you can see what to add. The
+usual cause is instrumentation that <strong>drops message bodies by default</strong> —
+enable content capture and re-drive the agents (see the README). The bundled
+dataset path always works offline.</p>
+</div>
+<hr />
+<h2 id="part-b-dt-evals-scores-inside-dynatrace-optional">Part B — dt-evals: scores inside Dynatrace (optional)<a class="headerlink" href="#part-b-dt-evals-scores-inside-dynatrace-optional" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Phoenix (Part A) is the workshop's recommended path</p>
+<p>dt-evals remains for teams that want eval scores <strong>inside Dynatrace</strong>. In this
+workshop it is <strong>being replaced by Phoenix</strong> — kept here as a short reference,
+not a required step.</p>
+</div>
+<p><a href="https://github.com/dynatrace-oss/dt-evals"><code>dt-evals</code></a> is a config-driven CLI that
+samples <code>gen_ai.*</code> spans from your Dynatrace environment, scores each with an LLM
+judge, and writes <code>gen_ai.evaluation.result</code> <strong>bizevents</strong> back — so a low score is
+one click from the trace, prompt, and tool calls that caused it. Where Part A had
+you <em>create</em> an evaluation by clicking, this path has you <strong>create one as a config
+file</strong> — and that distinction is the whole point of the section: you don't just run
+a script, you <strong>open the config and see that the config <em>is</em> the evaluation</strong>, then
+run it.</p>
+<h4 id="the-config-is-the-evaluation">The config is the evaluation<a class="headerlink" href="#the-config-is-the-evaluation" title="Permanent link">&para;</a></h4>
+<p>Open <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/evals/dt-evals/workshop-agents.dt-eval.yaml"><code>evals/dt-evals/workshop-agents.dt-eval.yaml</code></a>.
+Four blocks define the whole evaluation — grade <strong>what</strong>, judged <strong>by whom</strong>, scored
+on <strong>which metrics</strong>, failing <strong>when</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>What you're declaring</th>
+<th>Authoring question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scope</code></td>
+<td>which spans to pull (<code>service</code>, <code>since</code>, <code>sampling</code>)</td>
+<td><em>What do I grade?</em></td>
+</tr>
+<tr>
+<td><code>judge</code></td>
+<td>the LLM-as-a-judge (DeepSeek, OpenAI-compatible)</td>
+<td><em>Who grades it?</em></td>
+</tr>
+<tr>
+<td><code>metrics.enabled</code></td>
+<td>the rubrics to run (relevance, faithfulness, hallucination, coherence, toxicity, prompt-injection)</td>
+<td><em>What am I scoring for?</em></td>
+</tr>
+<tr>
+<td><code>alerts.thresholds</code></td>
+<td>the pass/fail bar per metric that makes the run exit non-zero</td>
+<td><em>When does it fail?</em></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">scope</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${DT_EVAL_SERVICE}</span><span class="w">   </span><span class="c1"># which agent's spans — you set this below</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">since</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2h</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">sampling</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> strategy</span><span class="p">:</span><span class="w"> </span><span class="nv">latest</span><span class="p p-Indicator">,</span><span class="nt"> count</span><span class="p">:</span><span class="w"> </span><span class="nv">25</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nt">metrics</span><span class="p">:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">relevance</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">faithfulness</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">hallucination</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">coherence</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">toxicity</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">prompt-injection</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="nt">alerts</span><span class="p">:</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nt">thresholds</span><span class="p">:</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">hallucination</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">            </span><span class="c1"># fail if ANY hallucination is detected</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nt">relevance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span><span class="w">              </span><span class="c1"># fail below 0.6</span>
+</code></pre></div>
+<p><strong>Author it in two edits.</strong> Point <code>scope</code> at <em>your</em> agent by setting
+<code>DT_EVAL_SERVICE</code> (it fills <code>scope.service</code> at render time — discover it, don't
+guess; defaults to <code>sre-agent</code>), and set the gate by tightening a
+<code>alerts.thresholds</code> line — e.g. <code>relevance: 0.8</code> to demand strongly on-topic
+answers. Those two edits <em>are</em> the evaluation; the run below just executes it.</p>
+<p><strong>Credentials</strong> live in <code>evals/.env</code>: a <strong>dedicated</strong> Dynatrace <code>dt0c01</code> token
+(<code>storage:spans:read</code> + <code>storage:events:write</code>) and your <code>…apps.dynatrace.com</code> URL.
+The judge key is <strong>auto-supplied by the room-password proxy</strong>
+(<code>WORKSHOP_ROOM_PASSWORD</code>), so you normally set no model key here. For the exact
+scopes and where each token is generated, see
+<strong><a href="../start-benchmark/#4-create-the-required-tokens">Start the benchmark → Create the required tokens</a></strong>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>evals/dt-evals
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># DT_EVAL_SERVICE defaults to ${WORKSHOP_PREFIX}-sre-agent when WORKSHOP_PREFIX is</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># set (the shared-tenant prefix from Codespace create) — export it only to override:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># export DT_EVAL_SERVICE="${WORKSHOP_PREFIX}-sre-agent"</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>./run-dt-eval.sh<span class="w">                     </span><span class="c1"># renders the config, then runs validate + run</span>
+</code></pre></div>
+<p>The run exits non-zero on a threshold breach — a ready-made CI gate. Read the
+scores back in a Dynatrace Notebook:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>fetch bizevents
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>| filter event.type == "gen_ai.evaluation.result"
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>| filter service.name == "${WORKSHOP_PREFIX}-sre-agent"
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>| summarize avg(toDouble(gen_ai.evaluation.score.value)), by: { gen_ai.evaluation.name }
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Shared tenant — keep the <code>service.name</code> filter</p>
+<p>dt-evals writes each <code>gen_ai.evaluation.result</code> bizevent carrying the evaluated
+agent's <code>service.name</code>, so the <code>service.name == "${WORKSHOP_PREFIX}-sre-agent"</code>
+clause scopes the read-back to <strong>your</strong> results on the shared workshop tenant.
+Replace <code>${WORKSHOP_PREFIX}</code> with your own prefix (<code>echo $WORKSHOP_PREFIX</code>).
+Drop the clause and you summarize every attendee's eval results at once.</p>
+</div>
+<p>Details, including the shared-vs-per-attendee tenant model:
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/evals/dt-evals/README.md"><code>evals/dt-evals/README.md</code></a>.</p>
+<hr />
+<h2 id="part-c-grade-a-diagnosis-against-the-answer-key">Part C — grade a <em>diagnosis</em> against the answer key<a class="headerlink" href="#part-c-grade-a-diagnosis-against-the-answer-key" title="Permanent link">&para;</a></h2>
+<p>Parts A/B judge generic quality (grounded? relevant? toxic?). The <strong>diagnostic
+module</strong> (<a href="../05-diagnose/">05 — Diagnose</a>) asks a sharper question: when the SRE
+agent investigates a <em>real</em> injected fault, <strong>did it reach the right root
+cause?</strong> Each scenario ships an objective answer key —
+<code>scenarios/&lt;id&gt;/expected-diagnosis.md</code> — and those keys are <strong>registered as this
+module's diagnosis-grading ground truth</strong> under
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/tree/main/evals/ground-truth"><code>evals/ground-truth/</code></a>.</p>
+<p>The grading check:</p>
+<blockquote>
+<p>Did the diagnosis cite <strong>≥ <code>pass_threshold</code></strong> of the answer key's required
+signals (root cause + evidence channel), identify the root cause, and avoid the
+forbidden cross-channel claims?</p>
+</blockquote>
+<p>Because scenarios 01–03 sit on <strong>distinct evidence channels</strong> (logs vs. events vs.
+<code>OOMKilled</code> status), a cross-channel claim is an unambiguous fail — so this grades
+objectively, even with no judge model.</p>
+<h3 id="deterministic-grade-offline-no-key-recommended">Deterministic grade (offline, no key) — recommended<a class="headerlink" href="#deterministic-grade-offline-no-key-recommended" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>evals
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>phoenix/run_diagnosis_eval.py<span class="w">        </span><span class="c1"># bundled golden + confab diagnoses</span>
+</code></pre></div>
+<p>It prints a PASS/FAIL per diagnosis and writes
+<code>phoenix/out/diagnosis_eval_results.csv</code>. Add <code>--llm-judge</code> (needs a judge key) to
+also run an LLM root-cause grader, or <code>--from-phoenix</code> to grade the agent's <em>live</em>
+diagnosis spans and annotate them back onto the traces.</p>
+<h3 id="author-a-custom-evaluator-in-dynatrace-dt-evals-optional">Author a custom evaluator in Dynatrace (dt-evals — optional)<a class="headerlink" href="#author-a-custom-evaluator-in-dynatrace-dt-evals-optional" title="Permanent link">&para;</a></h3>
+<p>For teams using Part B, the sharpest form of authoring is to <strong>write your own
+evaluator</strong> — a rubric that encodes exactly what a correct diagnosis of <em>one</em>
+scenario must say. Each answer key is compiled into one, so you read it, register
+it, enable it, and run it.</p>
+<p><strong>1. Read the rubric.</strong> Open
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/evals/dt-evals/evaluators/diagnosis-01-crashloopbackoff.md"><code>evals/dt-evals/evaluators/diagnosis-01-crashloopbackoff.md</code></a>.
+Its <strong>Judge prompt</strong> section <em>is</em> the evaluator — a binary grader (1 = correct,
+0 = incorrect) with three clauses: it must <strong>identify the root cause</strong>, <strong>cite ≥ 3
+required signals</strong> (<code>reason: CrashLoopBackOff</code>, the <code>Back-off restarting failed
+container</code> event, a non-zero <code>exitCode</code>, the fatal log line), and make <strong>none of
+the must-not-claim</strong> cross-channel confabulations (image-pull, OOM, probe,
+node/quota). That <em>required-signals + must-not-claim</em> shape is the pattern for
+authoring any objective grader. (Generated from the answer key — regenerate with
+<code>uv run python dt-evals/gen_diagnosis_evaluators.py</code>, don't hand-edit.)</p>
+<p><strong>2. Register it, enable it, run it.</strong> Register writes your rubric into the local
+custom-evaluator store; enabling it means uncommenting its line under
+<code>metrics.enabled</code> (and the matching <code>alerts.thresholds</code>) in
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/evals/dt-evals/scenario-diagnosis.dt-eval.yaml"><code>scenario-diagnosis.dt-eval.yaml</code></a>;
+then run scoped to the one scenario you diagnosed:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">cd</span><span class="w"> </span>evals/dt-evals
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># Register once — paste the judge prompt from evaluators/diagnosis-01-crashloopbackoff.md</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>./run-dt-eval.sh<span class="w"> </span>evaluators<span class="w"> </span>add
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Then grade the diagnosis spans for that scenario:</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>./run-dt-eval.sh<span class="w"> </span>--config<span class="w"> </span>scenario-diagnosis.dt-eval.yaml<span class="w"> </span>--metric<span class="w"> </span>diagnosis-01-crashloopbackoff
+</code></pre></div>
+<p>Swap in the evaluator name for the scenario you ran —
+<code>diagnosis-01-crashloopbackoff</code>, <code>diagnosis-02-imagepullbackoff</code>,
+<code>diagnosis-03-oomkilled</code>, or <code>diagnosis-12-intermittent-5xx</code> (one per
+<code>evaluators/*.md</code>; register and enable whichever you're grading).
+<code>./run-dt-eval.sh evaluators add</code> is a passthrough to the pinned <code>dt-evals</code> CLI,
+so there is nothing to export first.</p>
+<p>Correct diagnoses score 1, misses score 0 — a per-scenario pass/fail bizevent next
+to the trace. Details:
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/evals/ground-truth/README.md"><code>evals/ground-truth/README.md</code></a>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Closing the diagnose → evaluate → optimize loop</p>
+<p>The same diagnosis runs you grade here emit the <code>gen_ai.*</code> spans whose
+token/cost/latency drive <strong><a href="../07-optimize/">07 — Optimize</a></strong>. Break it
+(<a href="../05-diagnose/">05 — Diagnose</a>), grade it (06), cut the waste (07).</p>
+</div>
+<hr />
+<h2 id="what-to-measure-for-these-agents">What to measure for <em>these</em> agents<a class="headerlink" href="#what-to-measure-for-these-agents" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Good eval questions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SRE agent</strong></td>
+<td>Did it correctly identify the unhealthy pod? Did it call the right k8s/Dynatrace tool (not guess)? Was the diagnosis grounded in real tool output (no hallucinated pod names)?</td>
+</tr>
+<tr>
+<td><strong>BMAD crew</strong></td>
+<td>Did the workflow produce the expected artifacts (issues → branch → PR)? Did the developer agent stay within its repo scope? Did it finish within a token budget?</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-you-achieved-acceptance">What you achieved (acceptance)<a class="headerlink" href="#what-you-achieved-acceptance" title="Permanent link">&para;</a></h2>
+<ul>
+<li>You <strong>created an evaluation in the Phoenix UI</strong> (dataset → evaluator → judge)
+  and read its labelled scores — no code. This is the workshop's recommended path.</li>
+<li><em>(Optional)</em> You saw how the same evaluation is <strong>authored as a dt-evals config</strong>
+  — set its scope and alert gate, run it, and the scores land <strong>inside Dynatrace</strong>
+  as queryable bizevents with a CI-friendly pass/fail gate.</li>
+<li><em>(Optional)</em> You can <strong>author a custom evaluator</strong> (Part C) — a required-signals</li>
+<li>must-not-claim rubric — register and enable it, and grade an SRE-agent
+  diagnosis PASS/FAIL against the scenario answer key, offline or in Dynatrace.</li>
+</ul>
+<p>Next: <strong><a href="../07-optimize/">07 — Optimize</a></strong> — now that you can <em>measure</em> cost and
+quality, go cut the waste.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.code.annotate", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

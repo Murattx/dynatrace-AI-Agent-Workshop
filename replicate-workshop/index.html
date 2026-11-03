@@ -1,0 +1,1786 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Hands-on workshop — cost-efficient AI agent workflows with BMAD, kagent, Kubernetes, and Dynatrace AI Observability.">
+      
+      
+        <meta name="author" content="Henrik Rexed">
+      
+      
+      
+        <link rel="prev" href="../start-benchmark/">
+      
+      
+        <link rel="next" href="../kagent-explainer/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Replicate the workshop - Dynatrace AI Agent Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#replicate-the-agent-observability-workshop" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dynatrace AI Agent Workshop" class="md-header__button md-logo" aria-label="Dynatrace AI Agent Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dynatrace AI Agent Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Replicate the workshop
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    henrikrexed/dynatrace-AI-Agent-Workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dynatrace AI Agent Workshop" class="md-nav__button md-logo" aria-label="Dynatrace AI Agent Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dynatrace AI Agent Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    henrikrexed/dynatrace-AI-Agent-Workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../start-benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start the benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Replicate the workshop
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Replicate the workshop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-you-will-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What You Will Build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-choose-a-deployment-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Choose a Deployment Profile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-source-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Source Repositories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-repository-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Repository Map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-requirements-and-sizing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Requirements and Sizing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Requirements and Sizing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recommended-full-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended full lab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vendor-neutral-minimum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vendor-neutral minimum
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-credentials-and-trust-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Credentials and Trust Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-build-the-vendor-neutral-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Build the Vendor-Neutral Profile
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Build the Vendor-Neutral Profile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-fork-and-open-the-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Fork and open the project
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-check-the-cluster-and-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Check the cluster and platform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-make-model-credentials-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Make model credentials available
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-install-the-agents-and-verify-readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Install the agents and verify readiness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-send-a-read-only-smoke-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Send a read-only smoke request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-confirm-traces-in-phoenix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Confirm traces in Phoenix
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-install-outside-codespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Install Outside Codespaces
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-add-the-optional-dynatrace-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Add the Optional Dynatrace Backend
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-add-security-and-fault-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Add Security and Fault Scenarios
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Add Security and Fault Scenarios">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sre-diagnosis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SRE diagnosis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-evaluation-and-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Evaluation and Optimization
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Evaluation and Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phoenix-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phoenix evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-dynatrace-evaluation-and-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional Dynatrace evaluation and optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-verification-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Verification Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-troubleshooting-by-symptom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Troubleshooting by Symptom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-reset-and-tear-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Reset and Tear Down
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-suggested-study-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Suggested Study Order
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kagent-explainer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kagent in 5 minutes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run-of-show/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run of show (guided demo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00 — Setup (Codespace)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-platform-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 — Platform install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-agents-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 — Agents & MCP wiring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-secure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 — Secure agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-observe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 — Observe with Dynatrace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 — Diagnose a broken cluster
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-evaluate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 — Evaluate (Phoenix + dt-evals)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-optimize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 — Optimize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host runbook (facilitator)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="replicate-the-agent-observability-workshop">Replicate the Agent Observability Workshop<a class="headerlink" href="#replicate-the-agent-observability-workshop" title="Permanent link">&para;</a></h1>
+<p>This guide is a build-and-study manual for recreating the workshop as an
+operations engineer. It explains the architecture, the purpose of the important
+repositories and files, two deployment profiles, credential boundaries, how to
+prove the system works, and how to extend or remove it.</p>
+<p>The recommended learning path is to begin with the <strong>vendor-neutral profile</strong>:
+run Kubernetes, kagent, the OpenTelemetry Collector, and Phoenix without a
+Dynatrace account. Add Dynatrace only after you can deploy an agent, invoke it,
+and see its trace in Phoenix. Dynatrace is an optional observability backend,
+not a requirement for Kubernetes, kagent, agent execution, or Phoenix tracing.</p>
+<div class="admonition warning">
+<p class="admonition-title">Never commit credentials</p>
+<p>Keep model keys, room passwords, GitHub tokens, and Dynatrace tokens in a
+secret manager or environment variables. Do not put live values in manifests,
+command history, screenshots, issue comments, or documentation. If a value
+has been pasted into a public or shared location, rotate it.</p>
+</div>
+<h2 id="1-what-you-will-build">1. What You Will Build<a class="headerlink" href="#1-what-you-will-build" title="Permanent link">&para;</a></h2>
+<p>The workshop deploys seven kagent agents: one SRE investigator and a six-agent
+BMAD software-delivery crew. The SRE agent reads Kubernetes state and diagnoses
+faults. The BMAD crew uses a GitHub MCP server to work with issues, branches,
+files, and pull requests in a repository you control.</p>
+<p>An OpenTelemetry Collector receives agent traces, enriches them with Kubernetes
+metadata, normalizes GenAI attributes, and fans telemetry out to Phoenix and,
+when configured, Dynatrace. Phoenix is a local trace and evaluation backend.
+Dynatrace adds tenant-wide AI observability, Kubernetes topology, evaluation
+write-back, and optimization artifacts.</p>
+<pre class="mermaid"><code>flowchart LR
+    User[Engineer] --&gt; UI[kagent UI or A2A]
+    UI --&gt; Agents[kagent agents on Kubernetes]
+    Agents --&gt; Model[OpenAI-compatible model endpoint]
+    Agents --&gt;|OTLP traces| OTel[OpenTelemetry gateway]
+    OTel --&gt; Phoenix[Phoenix local UI]
+    OTel -. optional .-&gt; DT[Dynatrace tenant]
+    Agents --&gt;|MCP tools| K8s[Kubernetes API]
+    Agents --&gt;|GitHub MCP| GitHub[Your GitHub demo repository]
+    Tetragon[Tetragon] -. runtime events .-&gt; K8s</code></pre>
+<h2 id="2-choose-a-deployment-profile">2. Choose a Deployment Profile<a class="headerlink" href="#2-choose-a-deployment-profile" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Required services</th>
+<th>What it proves</th>
+<th>External account needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimal, vendor-neutral</td>
+<td>Kind, kagent, OpenTelemetry Collector, Phoenix, a model endpoint</td>
+<td>Agent lifecycle, Kubernetes tool use, traces, and local evaluations</td>
+<td>A model endpoint; no Dynatrace account</td>
+</tr>
+<tr>
+<td>Software-building crew</td>
+<td>Minimal profile plus GitHub MCP and a fine-grained GitHub token</td>
+<td>BMAD agents create issues and pull requests in a selected repository</td>
+<td>GitHub</td>
+</tr>
+<tr>
+<td>Security lab</td>
+<td>Minimal profile plus Agent Sandbox baseline and Tetragon</td>
+<td>Pod admission/network isolation and runtime process events</td>
+<td>No additional account; Tetragon needs host eBPF support</td>
+</tr>
+<tr>
+<td>Full workshop</td>
+<td>Above plus Dynatrace Operator, DynaKube, Dynatrace OTLP export, and optional <code>dt-evals</code>/<code>dtctl</code></td>
+<td>Tenant AI observability, Smartscape topology, evaluations, and optimization assets</td>
+<td>Dynatrace tenant and scoped tokens</td>
+</tr>
+</tbody>
+</table>
+<p>Start with the minimal profile. If the agent cannot call the model or Phoenix
+does not receive traces, Dynatrace will not fix those underlying issues.</p>
+<h2 id="3-source-repositories">3. Source Repositories<a class="headerlink" href="#3-source-repositories" title="Permanent link">&para;</a></h2>
+<p>Fork the workshop repository before changing it. Keep your fork as <code>origin</code> and
+the source project as <code>upstream</code>; this makes it possible to pull updates without
+confusing your changes with the workshop maintainers' changes.</p>
+<table>
+<thead>
+<tr>
+<th>Repository</th>
+<th>Role in the lab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop">Workshop repository</a></td>
+<td>Infrastructure code, agent manifests, documentation, scenarios, and evaluation assets.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Murattx/dynatrace-AI-Agent-Workshop">Your workshop fork</a></td>
+<td>The example fork used in this Codespace. In your own lab, replace this with your GitHub account's fork.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Murattx/sympozium-todo-demo">Sympozium Todo demo</a></td>
+<td>Example GitHub target for the BMAD crew. Treat it as a workflow target, not a deployable app until it has a runnable entry point and deployment definition.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/isItObservable/Kagent/tree/main/manifests/bmad-crew">isItObservable/Kagent BMAD manifests</a></td>
+<td>Upstream reference for the BMAD crew adapted by this workshop.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/kagent-dev/kagent">kagent</a></td>
+<td>Kubernetes-native agent runtime, CRDs, controller, UI, and Helm charts.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/kubernetes-sigs/kind">kind</a></td>
+<td>Runs a Kubernetes cluster using Docker containers as nodes.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/open-telemetry/opentelemetry-operator">OpenTelemetry Operator</a> and <a href="https://github.com/open-telemetry/opentelemetry-collector">Collector</a></td>
+<td>Reconciles the collector and receives/exports telemetry.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Arize-ai/phoenix">Arize Phoenix</a></td>
+<td>Local trace inspection and LLM evaluation UI.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/github/github-mcp-server">GitHub MCP Server</a></td>
+<td>GitHub tools exposed to the BMAD agents through MCP.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/cilium/tetragon">Tetragon</a></td>
+<td>eBPF-based runtime security observability and enforcement.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/kubernetes-sigs/agent-sandbox">Kubernetes Agent Sandbox</a></td>
+<td>Optional upstream sandbox controller. The workshop's current baseline is a repo-owned PSA/NetworkPolicy manifest.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Dynatrace/dynatrace-operator">Dynatrace Operator</a></td>
+<td>Optional Kubernetes monitoring and topology integration for Dynatrace.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/dynatrace-oss/dt-evals">dt-evals</a></td>
+<td>Optional config-driven evaluation against Dynatrace spans.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/henrikrexed/opentelemetry-demo-light">OpenTelemetry Demo Light</a></td>
+<td>Optional sample microservice app for diagnostic scenario 12; not the Todo demo.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>sympozium-todo-demo</code> repository currently describes a Todo board, but its
+<code>package.json</code> has no <code>start</code> script and the repository has no Kubernetes
+deployment manifests. The BMAD crew can still use it as a GitHub planning/code
+target if its token has access; it does not become a running app merely by
+setting <code>GH_DEMO_REPO</code>. Have the crew implement a runnable application and
+container/deployment path, or select a repository that already provides them.</p>
+<h2 id="4-repository-map">4. Repository Map<a class="headerlink" href="#4-repository-map" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.devcontainer/</code></td>
+<td>Codespace image, pinned tools, lifecycle hooks, secret contract, and bootstrap helpers.</td>
+</tr>
+<tr>
+<td><code>.devcontainer/devcontainer.json</code></td>
+<td>Declares Codespace ports, environment, CPU/memory recommendation, and create/start hooks.</td>
+</tr>
+<tr>
+<td><code>.devcontainer/postCreate.sh</code></td>
+<td>Creates/reuses Kind, attempts model-proxy exchange, installs the platform, and reports secret presence.</td>
+</tr>
+<tr>
+<td><code>.devcontainer/postStart.sh</code></td>
+<td>Restores the existing cluster after a Codespace resume and refreshes the docs deployment.</td>
+</tr>
+<tr>
+<td><code>.devcontainer/bootstrap/</code></td>
+<td>Resource checks, cluster creation, tool install, model-key dispenser, and personalized docs rendering.</td>
+</tr>
+<tr>
+<td><code>cluster/kind-config.yaml</code></td>
+<td>Kind cluster name, Kubernetes node image, and host-to-NodePort mappings. Current config has a control-plane node and a worker node.</td>
+</tr>
+<tr>
+<td><code>cluster/install.sh</code></td>
+<td>Idempotent Phase 2 platform install; component toggles are documented below.</td>
+</tr>
+<tr>
+<td><code>cluster/versions.env</code></td>
+<td>Pinned Helm chart/image versions and model endpoint defaults.</td>
+</tr>
+<tr>
+<td><code>cluster/secrets.sh</code></td>
+<td>Creates Kubernetes Secrets from environment variables without printing their values.</td>
+</tr>
+<tr>
+<td><code>cluster/otel/</code></td>
+<td>OpenTelemetry Operator and gateway Collector configuration.</td>
+</tr>
+<tr>
+<td><code>cluster/kagent/</code></td>
+<td>kagent Helm values, UI NodePort, and runtime configuration.</td>
+</tr>
+<tr>
+<td><code>cluster/phoenix/</code></td>
+<td>Phoenix Deployment and OTLP/UI Service.</td>
+</tr>
+<tr>
+<td><code>cluster/tetragon/</code></td>
+<td>Tetragon values and sensitive-file access policy.</td>
+</tr>
+<tr>
+<td><code>cluster/agent-sandbox/</code></td>
+<td>Restricted Pod Security Admission and default-deny network policy baseline.</td>
+</tr>
+<tr>
+<td><code>cluster/dynatrace/</code></td>
+<td>Optional Dynatrace Operator/DynaKube configuration and optimization YAML.</td>
+</tr>
+<tr>
+<td><code>agents/mcp/</code></td>
+<td>Shared model config and GitHub MCP server definitions.</td>
+</tr>
+<tr>
+<td><code>agents/sre/</code></td>
+<td>SRE agent prompt, tool permissions, and configuration.</td>
+</tr>
+<tr>
+<td><code>agents/bmad-crew/</code></td>
+<td>Analyst, PM, architect, developer, QA, and orchestrator agents.</td>
+</tr>
+<tr>
+<td><code>agents/install-agents.sh</code></td>
+<td>Applies model config, MCP servers, SRE agent, and BMAD crew.</td>
+</tr>
+<tr>
+<td><code>scenarios/</code></td>
+<td>Isolated fault injection, prompts, answer keys, and cleanup scripts.</td>
+</tr>
+<tr>
+<td><code>evals/</code></td>
+<td>Phoenix evaluation and optional Dynatrace <code>dt-evals</code> configuration/runners.</td>
+</tr>
+<tr>
+<td><code>docs/</code></td>
+<td>MkDocs source for the module-by-module workshop.</td>
+</tr>
+<tr>
+<td><code>cluster/mkdocs/</code></td>
+<td>In-cluster personalized workshop site served on port 8000.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-requirements-and-sizing">5. Requirements and Sizing<a class="headerlink" href="#5-requirements-and-sizing" title="Permanent link">&para;</a></h2>
+<h3 id="recommended-full-lab">Recommended full lab<a class="headerlink" href="#recommended-full-lab" title="Permanent link">&para;</a></h3>
+<ul>
+<li>GitHub account and a fork of the workshop repo.</li>
+<li>GitHub Codespace with <strong>4 CPU cores, 16 GB RAM, and 32 GB storage</strong>. Smaller
+  machines may run the minimal profile but are not recommended for all operators,
+  Tetragon, agents, Phoenix, and the optional demo app together.</li>
+<li>Docker-in-Docker, installed by the devcontainer feature, because Kind nodes are
+  Docker containers.</li>
+<li>Network access to GitHub Container Registry, public Helm/OCI registries, the
+  selected model endpoint, and (if enabled) Dynatrace.</li>
+<li><code>kubectl</code>, Helm, Kind, Node.js, <code>dtctl</code>, and <code>envsubst</code>; these are installed or
+  pinned by the Codespace image. <code>mkdocs</code> and <code>dt-evals</code> are optional for the
+  bootstrap: the docs are served in-cluster, and the eval runner has an <code>npx</code>
+  fallback.</li>
+</ul>
+<p>The current Kind config maps Phoenix <code>30606 -&gt; 6006</code>, kagent UI <code>30080 -&gt; 8080</code>,
+and MkDocs <code>30800 -&gt; 8000</code>. Codespaces may wrap these in an authenticated
+forwarded URL. The ports are host-side interfaces; the app Services remain in
+the cluster.</p>
+<h3 id="vendor-neutral-minimum">Vendor-neutral minimum<a class="headerlink" href="#vendor-neutral-minimum" title="Permanent link">&para;</a></h3>
+<p>You need a Docker host, Kind, kubectl, Helm, <code>envsubst</code>, and access to a model
+endpoint. Phoenix and the collector can run without Dynatrace. Skip Tetragon and
+the isolation baseline initially if your host cannot support eBPF or you want a
+smaller resource footprint. The SRE agent requires model access; the BMAD crew
+needs GitHub MCP credentials for real repository operations.</p>
+<h2 id="6-credentials-and-trust-boundaries">6. Credentials and Trust Boundaries<a class="headerlink" href="#6-credentials-and-trust-boundaries" title="Permanent link">&para;</a></h2>
+<p>Use the full
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/.devcontainer/SECRETS.md">Codespace secrets contract</a>
+as the authoritative list. The table below describes which parts of the
+workshop each credential unlocks.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Required for</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>WORKSHOP_PREFIX</code></td>
+<td>Stable attendee/service identity</td>
+<td>Not a secret. Use a lowercase label matching <code>^[a-z][a-z0-9-]{1,18}$</code>. It is auto-derived if omitted.</td>
+</tr>
+<tr>
+<td><code>WORKSHOP_ROOM_PASSWORD</code> and <code>WORKSHOP_DISPENSER_URL</code></td>
+<td>Workshop-hosted model access</td>
+<td>The bootstrap exchanges these for a per-attendee proxy URL and budget-capped key in the gitignored <code>.workshop-llm.env</code>. The host supplies both values.</td>
+</tr>
+<tr>
+<td><code>DEEPSEEK_API_KEY</code> or <code>LLM_API_KEY</code></td>
+<td>Direct model access when not using the dispenser</td>
+<td>Optional self-host/CI alternative. The current default model is DeepSeek <code>deepseek-chat</code> over an OpenAI-compatible API. A compatible endpoint/provider requires matching ModelConfig and values changes.</td>
+</tr>
+<tr>
+<td><code>GH_PAT</code></td>
+<td>BMAD GitHub write tools</td>
+<td>Fine-grained token scoped to one target repository; only Contents, Issues, and Pull Requests permissions needed by the workflow. Codespaces <code>GITHUB_TOKEN</code> may be a read/write fallback only when it has access to that repo.</td>
+</tr>
+<tr>
+<td><code>GH_DEMO_REPO</code></td>
+<td>BMAD task target</td>
+<td>Set as <code>owner/repo</code>; tell the orchestrator which repository to work on.</td>
+</tr>
+<tr>
+<td><code>DT_TENANT_URL</code> and <code>DT_API_TOKEN</code></td>
+<td>Dynatrace OTLP ingest and DynaKube data ingest</td>
+<td><code>DT_API_TOKEN</code> needs trace, metric, and log ingest scopes. The URL must be the tenant's <code>.live.</code> ingest domain.</td>
+</tr>
+<tr>
+<td><code>DYNATRACE_API_TOKEN</code></td>
+<td>Dynatrace Operator and optional <code>dt-evals</code></td>
+<td>Needs Kubernetes monitoring/ActiveGate scopes plus <code>storage:spans:read</code> and <code>storage:events:write</code> for the evaluation path. Keep distinct from an ingest-only token.</td>
+</tr>
+<tr>
+<td><code>DT_PLATFORM_TOKEN</code> and optionally <code>DT_ENVIRONMENT</code></td>
+<td><code>dtctl</code> optimization assets</td>
+<td>Platform token for dashboard, notebook, Guardian, and workflow deployment; platform URL is normally <code>.apps.dynatrace.com</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>The Codespace's GitHub token is separate from the model proxy and Dynatrace
+credentials. A working GitHub MCP does not mean model inference works, and a
+working model does not imply access to the target repository.</p>
+<h2 id="7-build-the-vendor-neutral-profile">7. Build the Vendor-Neutral Profile<a class="headerlink" href="#7-build-the-vendor-neutral-profile" title="Permanent link">&para;</a></h2>
+<h3 id="step-1-fork-and-open-the-project">Step 1: Fork and open the project<a class="headerlink" href="#step-1-fork-and-open-the-project" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Fork the <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop">workshop repository</a>
+   to your account.</li>
+<li>In your fork, create a Codespace on <code>main</code> and choose the recommended
+   4-core/16-GB machine for the full lab.</li>
+<li>If you want a minimal first boot, edit <code>.devcontainer/devcontainer.json</code>
+   before creating the Codespace and add these entries under <code>containerEnv</code>:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">"INSTALL_DYNATRACE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">"INSTALL_TETRAGON"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">"INSTALL_AGENT_SANDBOX"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span>
+</code></pre></div>
+<p>Keep the existing <code>CLUSTER_TOOL</code>, <code>CLUSTER_NAME</code>, and <code>KUBECONFIG</code> entries.
+   These flags are read by <code>cluster/install.sh</code> when <code>postCreate.sh</code> installs
+   the platform. On an already-created cluster, setting a flag only skips that
+   component on the next install; it does not uninstall a release already
+   installed.</p>
+<ol>
+<li>Configure one model access path before expecting agents to answer:</li>
+<li>Workshop: add the host-provided room password and dispenser URL as
+     Codespaces secrets.</li>
+<li>Self-hosted: use a provider key for the configured model endpoint and set
+     it as a Codespaces secret, or load it securely in the shell before running
+     <code>cluster/secrets.sh</code>.</li>
+<li>Wait for <code>postCreate</code> to finish. It creates the Kind cluster and installs the
+   platform automatically. Inspect
+   <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/.devcontainer/SECRETS.md">the secret contract</a>
+   before configuring the optional GitHub or Dynatrace integrations.</li>
+</ol>
+<h3 id="step-2-check-the-cluster-and-platform">Step 2: Check the cluster and platform<a class="headerlink" href="#step-2-check-the-cluster-and-platform" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubectl<span class="w"> </span>config<span class="w"> </span>current-context
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-A
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>opentelemetry-operator-system<span class="w"> </span>get<span class="w"> </span>pods,svc
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>phoenix<span class="w"> </span>get<span class="w"> </span>pods,svc
+</code></pre></div>
+<p>The current context should be <code>kind-workshop</code>; the Kind nodes should be Ready.
+The Collector should be in <code>opentelemetry-operator-system</code>, and Phoenix should
+be in <code>phoenix</code>. Open the local Phoenix URL on port 6006. If the bootstrap ran
+without Dynatrace credentials, the Collector is designed to keep Phoenix export
+working while Dynatrace export is disabled.</p>
+<h3 id="step-3-make-model-credentials-available">Step 3: Make model credentials available<a class="headerlink" href="#step-3-make-model-credentials-available" title="Permanent link">&para;</a></h3>
+<p>In a Codespace, the preferred method is to set secrets in GitHub and rebuild so
+the lifecycle hooks receive them. For a one-off local shell, enter secret values
+at hidden prompts rather than typing them into a command or committing them:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-s<span class="w"> </span>-p<span class="w"> </span><span class="s1">'Model API key: '</span><span class="w"> </span>LLM_API_KEY
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">printf</span><span class="w"> </span><span class="s1">'\n'</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">export</span><span class="w"> </span>LLM_API_KEY
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WORKSHOP_PREFIX</span><span class="o">=</span>solo-lab
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>bash<span class="w"> </span>cluster/secrets.sh
+</code></pre></div>
+<p>For the hosted model dispenser, set <code>WORKSHOP_ROOM_PASSWORD</code> and
+<code>WORKSHOP_DISPENSER_URL</code> in the shell environment, then run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>bash<span class="w"> </span>.devcontainer/bootstrap/dispense-llm.sh
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">source</span><span class="w"> </span>.workshop-llm.env
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WORKSHOP_PREFIX</span><span class="o">=</span>solo-lab
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>bash<span class="w"> </span>cluster/secrets.sh
+</code></pre></div>
+<p><code>dispense-llm.sh</code> writes the proxy key to <code>.workshop-llm.env</code> with restrictive
+permissions; the file is gitignored. Do not display or paste its contents. The
+explicit <code>WORKSHOP_PREFIX</code> keeps the resource names and telemetry identity
+consistent between platform and agent installation.</p>
+<h3 id="step-4-install-the-agents-and-verify-readiness">Step 4: Install the agents and verify readiness<a class="headerlink" href="#step-4-install-the-agents-and-verify-readiness" title="Permanent link">&para;</a></h3>
+<p>If the platform was installed by <code>postCreate</code>, apply the agent set:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>bash<span class="w"> </span>agents/install-agents.sh
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kagent<span class="w"> </span>get<span class="w"> </span>agents
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kagent<span class="w"> </span>get<span class="w"> </span>pods
+</code></pre></div>
+<p>The expected Agent resources are <code>murattx-sre-agent</code> (or your prefix's SRE
+agent) and six <code>*-bmad-*</code> resources. For a different prefix, replace
+<code>murattx</code> with your own. The acceptance conditions should become <code>ACCEPTED=True</code>
+and <code>READY=True</code>; corresponding agent pods should be <code>1/1 Running</code>.</p>
+<p>If BMAD should modify a repository, make sure <code>GH_PAT</code> and <code>GH_DEMO_REPO</code> are
+available before installing. The MCP token is injected into the MCP workload at
+apply time; it is not safe to use a broad personal token. For a SRE-only learning
+exercise, GitHub write access is not necessary, but the model Secret still is.</p>
+<h3 id="step-5-send-a-read-only-smoke-request">Step 5: Send a read-only smoke request<a class="headerlink" href="#step-5-send-a-read-only-smoke-request" title="Permanent link">&para;</a></h3>
+<p>Open the kagent UI on port 8080, select the SRE agent, and ask it to list pods in
+the <code>kagent</code> namespace. Or use the in-cluster A2A interface:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>run<span class="w"> </span>a2a<span class="w"> </span>--rm<span class="w"> </span>-i<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--image<span class="o">=</span>curlimages/curl:8.10.1<span class="w"> </span>-n<span class="w"> </span>kagent<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>--command<span class="w"> </span>--<span class="w"> </span>curl<span class="w"> </span>-sS<span class="w"> </span>-m<span class="w"> </span><span class="m">300</span><span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span>--data<span class="w"> </span><span class="s1">'{"jsonrpc":"2.0","id":"smoke-1","method":"message/send","params":{"message":{"role":"user","messageId":"smoke-1","kind":"message","parts":[{"kind":"text","text":"List the pods in the kagent namespace and briefly identify any that are not healthy."}]}}}'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span>http://kagent-controller.kagent:8083/api/a2a/kagent/solo-lab-sre-agent
+</code></pre></div>
+<p>Use the actual prefix in the endpoint. A completed JSON-RPC task and an agent
+answer prove that the controller, workload, model endpoint, and Kubernetes tool
+path are functioning together.</p>
+<h3 id="step-6-confirm-traces-in-phoenix">Step 6: Confirm traces in Phoenix<a class="headerlink" href="#step-6-confirm-traces-in-phoenix" title="Permanent link">&para;</a></h3>
+<p>Open Phoenix on port 6006. In the <code>default</code> project, inspect recent traces and
+look for agent, LLM, and tool spans. Expected span kinds include <code>AGENT</code>, <code>LLM</code>,
+and <code>TOOL</code>; model spans should identify the configured model. The trace may
+contain prompt and response content, so treat Phoenix access and exports as
+sensitive data.</p>
+<p>You can inspect recent span metadata through Phoenix's API at
+<code>http://localhost:6006/v1/projects/default/spans</code>. Avoid logging or sharing
+prompt/response bodies when debugging.</p>
+<h2 id="8-install-outside-codespaces">8. Install Outside Codespaces<a class="headerlink" href="#8-install-outside-codespaces" title="Permanent link">&para;</a></h2>
+<p>Codespaces is the tested path because the devcontainer configures Docker-in-
+Docker, versions, kubeconfig, forwarded ports, and lifecycle hooks. A Linux host
+can run the same scripts if it has Docker, Kind, kubectl, Helm, <code>envsubst</code>, and
+the pinned tool versions available. You are responsible for opening local ports
+and providing a working model endpoint.</p>
+<p>From the repository root, a small vendor-neutral install is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CLUSTER_TOOL</span><span class="o">=</span>kind
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CLUSTER_NAME</span><span class="o">=</span>workshop
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">WORKSHOP_PREFIX</span><span class="o">=</span>solo-lab
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>bash<span class="w"> </span>.devcontainer/bootstrap/create-cluster.sh
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nv">INSTALL_DYNATRACE</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nv">INSTALL_TETRAGON</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nv">INSTALL_AGENT_SANDBOX</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nv">INSTALL_MKDOCS</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span>bash<span class="w"> </span>cluster/install.sh
+</code></pre></div>
+<p>This leaves kagent, the OpenTelemetry Operator/gateway, and Phoenix enabled.
+Then provision a model key and apply the agents using Steps 3–5 above. To keep
+GitHub operations off, do not set a write token; for the full BMAD workflow,
+provide narrowly scoped credentials for a repository you own.</p>
+<p>The scripts are idempotent and can be re-run, but component flags are install
+switches, not uninstall switches. On a cluster where Dynatrace or Tetragon was
+already installed, setting the flag to <code>false</code> does not remove it. Start from a
+fresh Kind cluster for a clean minimal profile.</p>
+<h2 id="9-add-the-optional-dynatrace-backend">9. Add the Optional Dynatrace Backend<a class="headerlink" href="#9-add-the-optional-dynatrace-backend" title="Permanent link">&para;</a></h2>
+<p>Add Dynatrace after Phoenix tracing works. Configure the secrets listed in
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/.devcontainer/SECRETS.md"><code>.devcontainer/SECRETS.md</code></a>:</p>
+<ol>
+<li><code>DT_TENANT_URL</code>: the <code>.live.</code> tenant ingest URL.</li>
+<li><code>DT_API_TOKEN</code>: OTLP ingest scopes for traces, metrics, and logs.</li>
+<li><code>DYNATRACE_API_TOKEN</code>: Kubernetes monitoring/ActiveGate scopes; add the
+   spans-read and evaluation-write scopes if using <code>dt-evals</code>.</li>
+<li><code>DT_PLATFORM_TOKEN</code>: platform token for <code>dtctl</code> deployment of optimization
+   assets.</li>
+<li><code>DT_ENVIRONMENT</code>: optional <code>.apps.</code> platform URL, derived when possible.</li>
+</ol>
+<p>Rebuild the Codespace or export the values securely, then reconcile the stack:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>bash<span class="w"> </span>cluster/secrets.sh
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>bash<span class="w"> </span>cluster/install.sh
+</code></pre></div>
+<p>Check the <code>DynaKube</code>, Collector, and pods:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>dynatrace<span class="w"> </span>get<span class="w"> </span>dynakube
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>opentelemetry-operator-system<span class="w"> </span>get<span class="w"> </span>otelcol,pods
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>opentelemetry-operator-system<span class="w"> </span>logs<span class="w"> </span>deploy/otel-gateway-collector<span class="w"> </span>--tail<span class="o">=</span><span class="m">100</span>
+</code></pre></div>
+<p>The Collector exports to Phoenix and Dynatrace in parallel. If Dynatrace values
+are absent, the workshop can still be useful locally, but it cannot send data to
+your tenant or create Smartscape topology. Keep tenant ingest (<code>.live.</code>) and
+platform (<code>.apps.</code>) URLs/tokens distinct. Never solve a missing-scope problem by
+making a token broader than the workshop requires.</p>
+<p>Optimization dashboards, notebooks, Site Reliability Guardian, and workflow
+assets are under
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/tree/main/cluster/dynatrace/optimization"><code>cluster/dynatrace/optimization/</code></a>.
+They are Dynatrace-specific; they are not required for the vendor-neutral path.</p>
+<h2 id="10-add-security-and-fault-scenarios">10. Add Security and Fault Scenarios<a class="headerlink" href="#10-add-security-and-fault-scenarios" title="Permanent link">&para;</a></h2>
+<h3 id="agent-isolation">Agent isolation<a class="headerlink" href="#agent-isolation" title="Permanent link">&para;</a></h3>
+<p>The baseline in <code>cluster/agent-sandbox/isolation.yaml</code> is maintained in this
+repository. It applies restricted Pod Security Admission and a default-deny
+NetworkPolicy to the <code>agent-sandbox</code> namespace. It is not the same thing as
+installing the upstream Agent Sandbox controller. Read
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/cluster/agent-sandbox/README.md"><code>cluster/agent-sandbox/README.md</code></a>
+before adding stronger runtime isolation such as kagent substrate or a
+gVisor/Kata solution.</p>
+<p>Verify the baseline with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>ns<span class="w"> </span>agent-sandbox<span class="w"> </span>--show-labels
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>agent-sandbox<span class="w"> </span>get<span class="w"> </span>networkpolicy
+</code></pre></div>
+<p>Tetragon is optional for the minimal profile and depends on host-kernel eBPF
+support. When installed, use the sensitive-file policy and lab instructions in
+<a href="../03-secure/"><code>03-secure.md</code></a>. Prefer the policy's detection action while
+learning; enforcement can terminate workloads and depends on the kernel.</p>
+<h3 id="sre-diagnosis">SRE diagnosis<a class="headerlink" href="#sre-diagnosis" title="Permanent link">&para;</a></h3>
+<p>List scenarios and use the explicit cleanup command after every injection:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>bash<span class="w"> </span>scenarios/run.sh<span class="w"> </span>list
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>bash<span class="w"> </span>scenarios/run.sh<span class="w"> </span>inject<span class="w"> </span><span class="m">01</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>workshop-faults
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Ask the SRE agent to investigate; compare against the scenario answer key.</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>bash<span class="w"> </span>scenarios/run.sh<span class="w"> </span>cleanup<span class="w"> </span><span class="m">01</span>
+</code></pre></div>
+<p>Scenarios 01–03 use only isolated Kubernetes faults. Scenario 12 also needs the
+optional OpenTelemetry Demo Light app and a working observe pipeline. Its
+deployment is opt-in:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nv">INSTALL_OTEL_DEMO</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>bash<span class="w"> </span>cluster/install.sh
+</code></pre></div>
+<h2 id="11-evaluation-and-optimization">11. Evaluation and Optimization<a class="headerlink" href="#11-evaluation-and-optimization" title="Permanent link">&para;</a></h2>
+<h3 id="phoenix-evaluation">Phoenix evaluation<a class="headerlink" href="#phoenix-evaluation" title="Permanent link">&para;</a></h3>
+<p>Phoenix is the provider-neutral starting point for trace inspection and
+evaluation. Generate agent traffic, select LLM spans in the Phoenix UI, add
+examples to a dataset, and configure an LLM evaluator. The evaluator itself also
+needs a reachable model endpoint. A local Phoenix instance can store and inspect
+traces without Dynatrace; a model judge still consumes model tokens.</p>
+<p>For the version-pinned scripted workflow:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">cd</span><span class="w"> </span>evals
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>uv<span class="w"> </span>sync
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>phoenix/run_phoenix_eval.py
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>phoenix/run_phoenix_eval.py<span class="w"> </span>--from-phoenix
+</code></pre></div>
+<p>See <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/evals/phoenix/README.md"><code>evals/phoenix/README.md</code></a> and
+<a href="../06-evaluate/"><code>06-evaluate.md</code></a> for dataset, evaluator, and span-mapping
+details.</p>
+<h3 id="optional-dynatrace-evaluation-and-optimization">Optional Dynatrace evaluation and optimization<a class="headerlink" href="#optional-dynatrace-evaluation-and-optimization" title="Permanent link">&para;</a></h3>
+<p><code>dt-evals</code> reads spans from Dynatrace and writes evaluation events back, so it
+requires Dynatrace credentials in addition to the model judge. <code>dtctl</code> deploys
+the Dynatrace-specific optimization artifacts. See
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/evals/dt-evals/README.md"><code>evals/dt-evals/README.md</code></a>
+and
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/cluster/dynatrace/optimization/README.md"><code>cluster/dynatrace/optimization/README.md</code></a>.
+These are advanced optional paths, not prerequisites for running the agents.</p>
+<h2 id="12-verification-checklist">12. Verification Checklist<a class="headerlink" href="#12-verification-checklist" title="Permanent link">&para;</a></h2>
+<p>Use this as a reproducible acceptance checklist after a fresh install:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Cluster and baseline platform</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>kubectl<span class="w"> </span>config<span class="w"> </span>current-context
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-A
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="c1"># Agents and tool servers</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kagent<span class="w"> </span>get<span class="w"> </span>agents
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kagent<span class="w"> </span>get<span class="w"> </span>mcpservers,remotemcpservers
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kagent<span class="w"> </span>get<span class="w"> </span>pods
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="c1"># Telemetry and local UIs</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>opentelemetry-operator-system<span class="w"> </span>get<span class="w"> </span>pods,svc
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>phoenix<span class="w"> </span>get<span class="w"> </span>pods,svc
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>curl<span class="w"> </span>-I<span class="w"> </span>http://localhost:6006
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>curl<span class="w"> </span>-I<span class="w"> </span>http://localhost:8080
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="c1"># Optional personalized docs UI</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>curl<span class="w"> </span>-I<span class="w"> </span>http://localhost:8000
+</code></pre></div>
+<p>Acceptance for the vendor-neutral path: all seven agent resources are accepted
+and ready, their pods are <code>1/1 Running</code>, a read-only SRE smoke request completes,
+and Phoenix contains agent/LLM/tool spans for that request. Add a Dynatrace
+acceptance gate only when tenant credentials are configured: spans visible in
+AI Observability and Kubernetes entities present in Smartscape.</p>
+<p>The repository's validation harness is useful before and after changes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>bash<span class="w"> </span>.devcontainer/test/run-tests.sh<span class="w"> </span>--static
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>bash<span class="w"> </span>.devcontainer/test/run-tests.sh<span class="w"> </span>--no-rebuild
+</code></pre></div>
+<p>Static checks do not prove external model or Dynatrace credentials work. The
+live suite reports those checks as partial when the needed secrets or external
+services are unavailable. For a strict MkDocs build, install
+<code>requirements-docs.txt</code> and run <code>mkdocs build --strict</code>.</p>
+<h2 id="13-troubleshooting-by-symptom">13. Troubleshooting by Symptom<a class="headerlink" href="#13-troubleshooting-by-symptom" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>First check</th>
+<th>Likely action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kubectl</code> uses <code>localhost:8080</code> or has no current context</td>
+<td><code>kubectl config current-context</code>; <code>kind get clusters</code></td>
+<td>For this cluster run <code>kind export kubeconfig --name workshop</code>, then select <code>kind-workshop</code>.</td>
+</tr>
+<tr>
+<td>Agent accepted but <code>READY=False</code>; pod has <code>CreateContainerConfigError</code></td>
+<td><code>kubectl -n kagent describe pod &lt;agent-pod&gt;</code></td>
+<td>Look for <code>secret "kagent-deepseek" not found</code>; load a real model key and run <code>bash cluster/secrets.sh</code>, then wait for the Deployment to roll out.</td>
+</tr>
+<tr>
+<td>Agent pod runs but model requests fail</td>
+<td><code>kubectl -n kagent logs deploy/&lt;agent-deployment&gt;</code></td>
+<td>Confirm the model provider, API-compatible base URL, key Secret name/key, and network reachability. Never paste the key into logs or support messages.</td>
+</tr>
+<tr>
+<td>GitHub MCP is unready or tools return auth errors</td>
+<td><code>kubectl -n kagent get mcpservers,remotemcpservers</code>; inspect MCP pod logs</td>
+<td>Check that <code>GH_PAT</code> can access the selected repository and has only the required repo permissions; re-run <code>agents/install-agents.sh</code>.</td>
+</tr>
+<tr>
+<td>Phoenix UI works but has no spans</td>
+<td>Check agent smoke request, then Collector logs</td>
+<td>Verify agent OTLP endpoint and Collector pipelines; check <code>kubectl -n opentelemetry-operator-system logs deploy/otel-gateway-collector</code>.</td>
+</tr>
+<tr>
+<td>Phoenix traces exist but Dynatrace has none</td>
+<td>Check <code>DT_TENANT_URL</code>, <code>DT_API_TOKEN</code>, and Collector exporter logs</td>
+<td>Use the <code>.live.</code> ingest host and correct OTLP scopes; rerun secret provisioning and <code>cluster/install.sh</code>.</td>
+</tr>
+<tr>
+<td>DynaKube reports <code>ScopeMissing</code></td>
+<td><code>kubectl -n dynatrace describe dynakube dynakube</code></td>
+<td>The operator token needs Kubernetes monitoring/ActiveGate scopes; an ingest-only token is not sufficient.</td>
+</tr>
+<tr>
+<td>Tetragon is not ready or policy is not loaded</td>
+<td><code>kubectl -n tetragon get pods</code>; <code>tetra tracingpolicy list</code></td>
+<td>Check eBPF/BTF and kernel support; see <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/cluster/tetragon/README.md"><code>cluster/tetragon/README.md</code></a>.</td>
+</tr>
+<tr>
+<td>Docs site is stale or unready</td>
+<td><code>kubectl -n workshop-docs get pods</code>; port 8000</td>
+<td>Re-run <code>bash .devcontainer/bootstrap/render-docs.sh</code> then <code>kubectl -n workshop-docs rollout restart deploy/mkdocs</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Use the broader <a href="../troubleshooting/">Troubleshooting</a> page for module-specific
+diagnostics. Collect sanitized status/events, not Secret YAML or model prompts,
+when asking for help.</p>
+<h2 id="14-reset-and-tear-down">14. Reset and Tear Down<a class="headerlink" href="#14-reset-and-tear-down" title="Permanent link">&para;</a></h2>
+<p>Clean up each injected scenario with <code>bash scenarios/run.sh cleanup &lt;id&gt;</code>. To
+remove the workshop platform while keeping the Kind cluster, run
+<code>bash cluster/uninstall.sh</code>; read the script first because it intentionally
+keeps namespaces and Secrets. For a complete disposable-lab reset, delete the
+Kind cluster:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kind<span class="w"> </span>delete<span class="w"> </span>cluster<span class="w"> </span>--name<span class="w"> </span>workshop
+</code></pre></div>
+<p>This deletes all Kubernetes resources and local cluster state. It does not revoke
+GitHub, model-provider, or Dynatrace credentials; rotate/revoke those separately
+when they are no longer needed.</p>
+<h2 id="15-suggested-study-order">15. Suggested Study Order<a class="headerlink" href="#15-suggested-study-order" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Read <a href="../kagent-explainer/">kagent in 5 minutes</a>, then inspect the SRE and BMAD
+   manifests under <code>agents/</code>.</li>
+<li>Trace the platform install from <code>.devcontainer/postCreate.sh</code> to
+   <code>cluster/install.sh</code>, then compare it with <code>cluster/versions.env</code> and the
+   component manifests.</li>
+<li>Follow a smoke request from the kagent UI/A2A endpoint through the model call
+   and Kubernetes tool call; inspect its spans in Phoenix.</li>
+<li>Read the Collector processors/exporters in
+   <code>cluster/otel/collector-gateway.yaml</code>; identify which steps are OpenTelemetry
+   standard configuration and which are workshop-specific attribute mapping.</li>
+<li>Run one fault scenario and grade the SRE answer against its ground truth.</li>
+<li>Add Dynatrace only after the local trace path is clear; inspect the
+   optimization DQL and eval configuration as separate integrations.</li>
+<li>Change one component at a time, rerun the acceptance checks, and keep notes
+   about resource use, token cost, trace shape, and failure modes.</li>
+</ol>
+<p>For the guided module sequence, continue with <a href="../00-setup/">00 — Setup</a>, then
+work through modules 01–07. The <a href="../run-of-show/">Run of show</a> is the shorter
+facilitated path; this page is the longer self-study and replication reference.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.code.annotate", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

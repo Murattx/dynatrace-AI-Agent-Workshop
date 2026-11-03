@@ -1,0 +1,1613 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Hands-on workshop — cost-efficient AI agent workflows with BMAD, kagent, Kubernetes, and Dynatrace AI Observability.">
+      
+      
+        <meta name="author" content="Henrik Rexed">
+      
+      
+      
+        <link rel="prev" href="../06-evaluate/">
+      
+      
+        <link rel="next" href="../troubleshooting/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>07 — Optimize - Dynatrace AI Agent Workshop</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#07-optimize" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dynatrace AI Agent Workshop" class="md-header__button md-logo" aria-label="Dynatrace AI Agent Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dynatrace AI Agent Workshop
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              07 — Optimize
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    henrikrexed/dynatrace-AI-Agent-Workshop
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dynatrace AI Agent Workshop" class="md-nav__button md-logo" aria-label="Dynatrace AI Agent Workshop" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dynatrace AI Agent Workshop
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    henrikrexed/dynatrace-AI-Agent-Workshop
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../start-benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start the benchmark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../replicate-workshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Replicate the workshop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kagent-explainer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kagent in 5 minutes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run-of-show/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Run of show (guided demo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00 — Setup (Codespace)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-platform-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 — Platform install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-agents-mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 — Agents & MCP wiring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-secure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 — Secure agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-observe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 — Observe with Dynatrace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 — Diagnose a broken cluster
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-evaluate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 — Evaluate (Phoenix + dt-evals)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 — Optimize
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 — Optimize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-optimization-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The optimization loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#read-the-workflow-before-you-cut-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read the workflow before you cut it
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Read the workflow before you cut it">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-who-is-in-the-crew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 · Who is in the crew
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-what-operations-an-agent-performs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 · What operations an agent performs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-anatomy-of-one-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 · Anatomy of one task
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-the-a2a-hand-offs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 · The A2A hand-offs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-the-reasoning-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 · The reasoning loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-the-tool-call-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 · The tool-call sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-token-accumulation-across-the-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 · Token accumulation across the run
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-rank-your-agents-by-spend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Rank your agents by spend
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-four-highest-leverage-cuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The four highest-leverage cuts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The four highest-leverage cuts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-remove-tools-the-agent-never-uses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a) Remove tools the agent never uses
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="a) Remove tools the agent never uses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tool-coverage-lookup-the-never-called-tools-by-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tool-coverage lookup — the never-called tools, by name
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-tighten-the-system-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b) Tighten the system prompt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-fix-chatty-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c) Fix chatty workflows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-right-size-the-model-per-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        d) Right-size the model per agent
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-prove-the-win" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Prove the win
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-make-it-continuous-the-guardian-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Make it continuous — the guardian + workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-achieved-acceptance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you achieved (acceptance)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#youve-completed-the-arc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        You've completed the arc
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Host runbook (facilitator)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="07-optimize">07 — Optimize<a class="headerlink" href="#07-optimize" title="Permanent link">&para;</a></h1>
+<p>This is where the whole workshop pays off. You can now <strong>run</strong> agents (02),
+<strong>secure</strong> them (03), <strong>observe</strong> their cost (04), and <strong>evaluate</strong> their quality
+(06). Optimization is the loop that uses that evidence to make agents <strong>cheaper
+without making them worse</strong>.</p>
+<div class="admonition quote">
+<p class="admonition-title">The core idea</p>
+<p>The biggest driver of AI agent cost is <strong>tokens</strong> — and most token spend is
+waste: unused tools inflating every prompt, oversized system prompts, chatty
+multi-hop workflows, and retries. You can't cut what you can't see, which is
+why observation and evaluation came first.</p>
+</div>
+<h2 id="the-optimization-loop">The optimization loop<a class="headerlink" href="#the-optimization-loop" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    observe["observe (04)"] --&gt; waste["find the waste"]
+    evaluate["evaluate (06)"] --&gt; change["make one change"]
+    waste --&gt; change
+    change --&gt; remeasure["re-measure cost + quality"]
+    remeasure --&gt;|keep only if quality holds| waste</code></pre>
+<p>Change one thing, re-run the eval suite, and keep the change <strong>only if quality
+holds and cost dropped</strong>. Never optimize on cost alone — that's how you ship a
+cheap agent that gives wrong answers.</p>
+<div class="admonition tip">
+<p class="admonition-title">Three ready-made surfaces — deploy them first</p>
+<p>This module ships a Dynatrace <strong>read-the-run notebook</strong>, a <strong>dashboard</strong>, and a
+<strong>before/after notebook</strong> that compute every signal below from your crew's
+<code>gen_ai.*</code> spans. Deploy them, then read the rest of this page with your own
+data on screen:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>dtctl<span class="w"> </span>config<span class="w"> </span>use-context<span class="w"> </span>&lt;your-tenant&gt;
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>cluster/dynatrace/optimization
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>:<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">WORKSHOP_PREFIX</span><span class="p">:?set your attendee prefix first</span><span class="si">}</span><span class="s2">"</span><span class="w">   </span><span class="c1"># shared-tenant scope</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># The assets filter on workshop.attendee == "${WORKSHOP_PREFIX}" — render it in</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># before deploying (scoped envsubst leaves the files' other $refs untouched):</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>.rendered
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">for</span><span class="w"> </span>f<span class="w"> </span><span class="k">in</span><span class="w"> </span>ai-agent-workflow-steps.notebook.yaml<span class="w"> </span>ai-agent-optimization.dashboard.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">         </span>ai-agent-optimization-before-after.notebook.yaml<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span>envsubst<span class="w"> </span><span class="s1">'${WORKSHOP_PREFIX}'</span><span class="w"> </span>&lt;<span class="w"> </span><span class="s2">"</span><span class="nv">$f</span><span class="s2">"</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">".rendered/</span><span class="nv">$f</span><span class="s2">"</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">done</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>dtctl<span class="w"> </span>create<span class="w"> </span>notebook<span class="w"> </span>-f<span class="w"> </span>.rendered/ai-agent-workflow-steps.notebook.yaml
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>dtctl<span class="w"> </span>apply<span class="w">       </span>-f<span class="w"> </span>.rendered/ai-agent-optimization.dashboard.yaml
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>dtctl<span class="w"> </span>create<span class="w"> </span>notebook<span class="w"> </span>-f<span class="w"> </span>.rendered/ai-agent-optimization-before-after.notebook.yaml
+</code></pre></div>
+<p>See <a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/blob/main/cluster/dynatrace/optimization/README.md"><code>cluster/dynatrace/optimization/README.md</code></a>
+for the guardian + workflow (they render the same way).</p>
+<p>No <code>dtctl</code>? Download the UI-importable JSON and upload it in your own tenant
+(Dashboards / Notebooks / Workflows → <strong>Upload</strong>):</p>
+<ul>
+<li><a href="../assets/optimization/ai-agent-workflow-steps.notebook.json">ai-agent-workflow-steps.notebook.json</a> — <em>Read an AI Agent Run</em> (start here)</li>
+<li><a href="../assets/optimization/ai-agent-optimization.dashboard.json">ai-agent-optimization.dashboard.json</a></li>
+<li><a href="../assets/optimization/ai-agent-optimization-before-after.notebook.json">ai-agent-optimization-before-after.notebook.json</a></li>
+<li><a href="../assets/optimization/ai-agent-optimization.workflow.json">ai-agent-optimization.workflow.json</a> — scheduled guardian run</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Already personalized on your workshop site</p>
+<p>When you open this page from <strong>your own in-cluster docs site</strong> (the
+<code>mkdocs</code> service in your devcontainer — <code>http://localhost:8000</code>), these
+downloads are rendered with <strong>your</strong> <code>WORKSHOP_PREFIX</code> already baked into
+every DQL filter (<code>workshop.attendee == "&lt;your-prefix&gt;"</code>), so you can
+upload them as-is. On the public GitHub Pages copy they keep the literal
+<code>${WORKSHOP_PREFIX}</code> placeholder — find/replace it with your attendee
+prefix before uploading (the <code>dtctl</code> path does the same via <code>envsubst</code>).</p>
+</div>
+<ul>
+<li><strong>Notebook — <em>Read an AI Agent Run</em></strong> (<code>ai-agent-workflow-steps</code>): walks one
+  run from the crew list down to the per-hop token bill — the understand-first
+  companion to the section below. Start here.</li>
+<li><strong>Dashboard</strong> — <em>AI Agent Optimization</em>: spend ranking, input:output ratio,
+  tools-actually-used, loop detection, token-trend.</li>
+<li><strong>Notebook — <em>AI Agent Optimization — before/after</em></strong>: the observe → find →
+  change → re-measure → keep/revert walkthrough, one runnable DQL cell per step.</li>
+</ul>
+<p>All five artifacts (read-the-run notebook, dashboard, before/after notebook,
+guardian, workflow — §4) are dtctl-ready YAML in
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/tree/main/cluster/dynatrace/optimization"><code>cluster/dynatrace/optimization/</code></a> with a README.</p>
+</div>
+<h2 id="read-the-workflow-before-you-cut-it">Read the workflow before you cut it<a class="headerlink" href="#read-the-workflow-before-you-cut-it" title="Permanent link">&para;</a></h2>
+<p>Before you <em>cut</em> an agent's cost you have to <em>read</em> what it is doing. The ranking
+and cuts below act on numbers; this section is how you earn the right to trust
+those numbers — by walking <strong>one real run</strong> from the outside in, zooming one level
+at a time:</p>
+<pre class="mermaid"><code>flowchart TD
+    s1["1 · Who is in the crew"] --&gt; s2["2 · What operations an agent performs"]
+    s2 --&gt; s3["3 · Anatomy of one task"]
+    s3 --&gt; s4["4 · The A2A hand-offs"]
+    s4 --&gt; s5["5 · The reasoning loop"]
+    s5 --&gt; s6["6 · The tool-call sequence"]
+    s6 --&gt; s7["7 · Token accumulation across the run"]</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Run these in your own tenant</p>
+<p>All seven queries below are the cells of the <strong>read-the-run notebook</strong>,
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/tree/main/cluster/dynatrace/optimization/ai-agent-workflow-steps.notebook.yaml"><code>ai-agent-workflow-steps.notebook.yaml</code></a>
+(deploy it from the callout above). Each step below names the matching notebook
+section so you can run it against your own crew and page through the run live.</p>
+</div>
+<p>First, the vocabulary these queries use — correct it to whatever <em>your</em> crew
+emits:</p>
+<ul>
+<li>An <strong>LLM call</strong> (the agent <em>reasoning</em>) is a span with
+  <code>gen_ai.operation.name == "generate_content"</code>. Key on that operation, never on a
+  framework span name — some SDK layers wrap each call in an extra span, and the
+  operation counts each LLM call exactly once.</li>
+<li>A <strong>tool call</strong> (the agent <em>acting</em>) is <code>gen_ai.operation.name == "execute_tool"</code>,
+  with the tool name in <code>gen_ai.tool.name</code>. Drop <code>gen_ai.tool.name == "(merged
+  tools)"</code> — a Dynatrace span-merge artifact, not a real tool.</li>
+<li><strong>Tokens</strong> live on <code>gen_ai.usage.input_tokens</code> / <code>gen_ai.usage.output_tokens</code>
+  (carried on the <code>generate_content</code> spans).</li>
+<li>One agent's <strong>unit of work</strong> is <code>gen_ai.task.id</code> (it stays inside a single
+  service). A full <strong>cross-agent run</strong> is <code>trace.id</code> — one trace spans the whole
+  crew.</li>
+<li>Order events by <code>start_time</code> (<code>timestamp</code> is null on these spans).</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Shared tenant — scope every query to your prefix</p>
+<p>The workshop shares one Dynatrace tenant across all attendees, so every query
+below is scoped with <code>workshop.attendee == "${WORKSHOP_PREFIX}"</code> (the collector
+stamps this attribute on all your telemetry) and the SRE agent arrives as
+<code>service.name == "${WORKSHOP_PREFIX}-sre-agent"</code>. When you paste a snippet into a
+Dynatrace Notebook, <strong>replace <code>${WORKSHOP_PREFIX}</code> with your own prefix</strong> — the
+value you set at Codespace create (<code>echo $WORKSHOP_PREFIX</code>). Without it you would
+see the whole class's data mixed together.</p>
+</div>
+<h3 id="1-who-is-in-the-crew">1 · Who is in the crew<a class="headerlink" href="#1-who-is-in-the-crew" title="Permanent link">&para;</a></h3>
+<p><strong>What you're seeing:</strong> your agents. Every service in the <code>kagent</code> namespace that
+actually makes an LLM call is an agent (the <code>llmCalls &gt; 0</code> filter drops the
+<code>kagent-controller</code> plumbing). <code>llmCalls</code> is how often it reasoned; <code>toolCalls</code>
+how often it acted.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>fetch spans
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent"
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>| summarize spans = count(),
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    llmCalls = countIf(gen_ai.operation.name == "generate_content"),
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    toolCalls = countIf(gen_ai.operation.name == "execute_tool" and gen_ai.tool.name != "(merged tools)"),
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    by:{agent = service.name}
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>| filter llmCalls &gt; 0
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>| sort llmCalls desc
+</code></pre></div>
+<p><em>Notebook: section 1.</em></p>
+<h3 id="2-what-operations-an-agent-performs">2 · What operations an agent performs<a class="headerlink" href="#2-what-operations-an-agent-performs" title="Permanent link">&para;</a></h3>
+<p><strong>What you're seeing:</strong> the vocabulary. Everything an agent emits falls into a
+handful of activities — it <strong>reasons</strong> (<code>generate_content</code>), <strong>acts</strong>
+(<code>execute_tool</code>), and <strong>talks to other agents</strong> (<code>a2a.*</code> + <code>invoke_agent</code>).
+Everything else is the <code>Other</code> bucket you can ignore while reading the run.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>fetch spans
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent"
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>| fieldsAdd activity = if(gen_ai.operation.name == "generate_content", "LLM call (generate_content)",
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    else: if(gen_ai.operation.name == "execute_tool", "Tool call (execute_tool)",
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    else: if(gen_ai.operation.name == "invoke_agent", "Agent invocation (invoke_agent)",
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    else: if(startsWith(span.name, "a2a."), "A2A messaging",
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    else: "Other (HTTP / framework)"))))
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>| summarize spans = count(), by:{activity}
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>| sort spans desc
+</code></pre></div>
+<p><em>Notebook: section 2.</em></p>
+<h3 id="3-anatomy-of-one-task">3 · Anatomy of one task<a class="headerlink" href="#3-anatomy-of-one-task" title="Permanent link">&para;</a></h3>
+<p><strong>What you're seeing:</strong> one run, step by step. The sub-query picks the task with
+the <strong>most <code>generate_content</code> hops</strong> (the busiest reasoning loop — the most
+interesting example) and joins its spans back on <code>gen_ai.task.id</code>. Read
+top-to-bottom: an LLM call, then the tools it decided to run, then the next LLM
+call. <code>kagent__NS__&lt;agent&gt;</code> tools are hand-offs to sub-agents (see step 4).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>fetch spans
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent"
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>| join [
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    fetch spans
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    | filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and gen_ai.operation.name == "generate_content"
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    | summarize hops = count(), by:{gen_ai.task.id}
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    | sort hops desc, gen_ai.task.id asc
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    | limit 1
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  ], on:{gen_ai.task.id}, kind:inner, fields:{}
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>| filter gen_ai.operation.name == "generate_content" or gen_ai.operation.name == "execute_tool"
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>| filter gen_ai.tool.name != "(merged tools)" or isNull(gen_ai.tool.name)
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>| fieldsAdd durationMs = duration / 1000000
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>| fields start_time, agent = service.name, step = span.name, operation = gen_ai.operation.name, durationMs
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>| sort start_time asc
+</code></pre></div>
+<p><em>Notebook: section 3.</em></p>
+<h3 id="4-the-a2a-hand-offs">4 · The A2A hand-offs<a class="headerlink" href="#4-the-a2a-hand-offs" title="Permanent link">&para;</a></h3>
+<p><strong>What you're seeing:</strong> the workflow graph. In this crew an agent delegates to
+another by calling it <strong>as a tool</strong> named <code>kagent__NS__&lt;agent&gt;</code>; stripping that
+prefix gives the edge <code>fromAgent → toAgent</code>. Hand-offs cross <code>service.name</code>, so
+they are correlated by <code>trace.id</code>, not by a single <code>gen_ai.task.id</code>. The
+orchestrator is usually the hub that fans work out to the specialists.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>fetch spans
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and gen_ai.operation.name == "execute_tool"
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>| filter startsWith(gen_ai.tool.name, "kagent__")
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>| fieldsAdd callee = replaceString(gen_ai.tool.name, "kagent__NS__", "")
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>| summarize handoffs = count(), by:{fromAgent = service.name, toAgent = callee}
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>| sort handoffs desc
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Returns nothing? That's expected unless the BMAD crew has run</p>
+<p>A2A hand-offs (<code>kagent__NS__&lt;agent&gt;</code> tool calls) are only emitted when the
+<strong><code>bmad-orchestrator</code></strong> delegates to its specialists. The solo <code>sre-agent</code> —
+the default k8s-only investigation path — calls only <code>kagent-tool-server</code>
+tools and produces <strong>zero</strong> <code>kagent__</code> spans by design, so this graph is empty
+until the crew has run. To populate it:</p>
+<ol>
+<li>Run the <strong>BMAD crew</strong> (the A2A sample prompt from
+   <a href="../02-agents-mcp/#5-send-a-sample-prompt">module 02 §5</a>) and re-run the query.</li>
+<li>Check the <strong>timeframe</strong> — the notebook cell is hard-coded to <code>now()-7d</code>;
+   widen it or re-run after the crew has executed within the window.</li>
+<li>Confirm <em>any</em> <code>kagent__</code> spans exist at all:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>fetch spans
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and startsWith(gen_ai.tool.name, "kagent__")
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>| summarize count(), by:{gen_ai.tool.name}
+</code></pre></div>
+   No rows means no crew hand-offs have happened yet.</li>
+</ol>
+</div>
+<p><em>Notebook: section 4.</em></p>
+<h3 id="5-the-reasoning-loop">5 · The reasoning loop<a class="headerlink" href="#5-the-reasoning-loop" title="Permanent link">&para;</a></h3>
+<p><strong>What you're seeing:</strong> where a loop re-reads context. Same busiest task as step 3,
+but only its <code>generate_content</code> hops in order. Watch <code>inputTokens</code> climb hop after
+hop while <code>outputTokens</code> stays small: every hop re-sends the whole growing
+conversation back to the model. A flat line means a tight agent; a staircase means
+a context that never gets trimmed. That growth is exactly the chatty-workflow lever
+in <a href="#c-fix-chatty-workflows">§2c</a> below.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>fetch spans
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and gen_ai.operation.name == "generate_content"
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>| join [
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    fetch spans
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    | filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and gen_ai.operation.name == "generate_content"
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    | summarize hops = count(), by:{gen_ai.task.id}
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    | sort hops desc, gen_ai.task.id asc
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    | limit 1
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  ], on:{gen_ai.task.id}, kind:inner, fields:{}
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>| fields start_time, agent = service.name, inputTokens = gen_ai.usage.input_tokens, outputTokens = gen_ai.usage.output_tokens
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>| sort start_time asc
+</code></pre></div>
+<p><em>Notebook: section 5.</em></p>
+<h3 id="6-the-tool-call-sequence">6 · The tool-call sequence<a class="headerlink" href="#6-the-tool-call-sequence" title="Permanent link">&para;</a></h3>
+<p><strong>What you're seeing:</strong> what the agent decided to do. Same busiest task, now only
+its <code>execute_tool</code> spans in order. Each row is a decision the model made between
+reasoning hops — a memory lookup, a sub-agent delegation (<code>kagent__NS__*</code>), a
+diagnostic call. Compare this list against each agent's <em>granted</em> tools: tools
+that never appear here are the never-called overhead you drop in
+<a href="#a-remove-tools-the-agent-never-uses">§2a</a> below.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>fetch spans
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and gen_ai.operation.name == "execute_tool" and gen_ai.tool.name != "(merged tools)"
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>| join [
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    fetch spans
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    | filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and gen_ai.operation.name == "generate_content"
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    | summarize hops = count(), by:{gen_ai.task.id}
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    | sort hops desc, gen_ai.task.id asc
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    | limit 1
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  ], on:{gen_ai.task.id}, kind:inner, fields:{}
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>| fieldsAdd durationMs = duration / 1000000
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>| fields start_time, agent = service.name, tool = gen_ai.tool.name, durationMs
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>| sort start_time asc
+</code></pre></div>
+<p><em>Notebook: section 6.</em></p>
+<h3 id="7-token-accumulation-across-the-run">7 · Token accumulation across the run<a class="headerlink" href="#7-token-accumulation-across-the-run" title="Permanent link">&para;</a></h3>
+<p><strong>What you're seeing:</strong> the bill, built one hop at a time. Same busiest task, every
+<code>generate_content</code> hop with its <code>inputTokens</code>, <code>outputTokens</code>, and <code>hopCost</code> (the
+two added). Sum the <code>inputTokens</code> column and you get the run's input bill — on the
+reference tenant that was ~182k input vs ~14k output across 10 hops (≈13:1), with
+the last hop costing several times the first purely because the context grew. That
+is why trimming the loop (step 5) beats trimming almost anything else.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>fetch spans
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and gen_ai.operation.name == "generate_content"
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>| join [
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    fetch spans
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    | filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and gen_ai.operation.name == "generate_content"
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    | summarize hops = count(), by:{gen_ai.task.id}
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    | sort hops desc, gen_ai.task.id asc
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    | limit 1
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>  ], on:{gen_ai.task.id}, kind:inner, fields:{}
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>| fieldsAdd hopCost = gen_ai.usage.input_tokens + gen_ai.usage.output_tokens
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>| fields start_time, inputTokens = gen_ai.usage.input_tokens, outputTokens = gen_ai.usage.output_tokens, hopCost
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>| sort start_time asc
+</code></pre></div>
+<p><em>Notebook: section 7.</em></p>
+<p>With the run read end-to-end, you now know <em>which</em> agent to rank first and <em>why</em>
+its tokens are high. That is the ranking the rest of this page acts on.</p>
+<h2 id="1-rank-your-agents-by-spend">1. Rank your agents by spend<a class="headerlink" href="#1-rank-your-agents-by-spend" title="Permanent link">&para;</a></h2>
+<p>From Dynatrace AI Observability (module 04), find your most expensive agents —
+total tokens and estimated cost per run. Start at the top of that list; a 20%
+cut on your priciest agent beats a 50% cut on a rarely-used one.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>fetch spans
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and isNotNull(gen_ai.usage.output_tokens)
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>| summarize llmCalls = count(),
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    inputTokens  = sum(gen_ai.usage.input_tokens),
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    outputTokens = sum(gen_ai.usage.output_tokens),
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    by:{agent = service.name}
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>| fieldsAdd totalTokens = inputTokens + outputTokens,
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    inOutRatio      = round(toDouble(inputTokens) / outputTokens, decimals: 1),
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    avgInputPerCall = round(toDouble(inputTokens) / llmCalls)
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>| sort totalTokens desc
+</code></pre></div>
+<div class="admonition example">
+<p class="admonition-title">What this looked like on the reference tenant (7-day window)</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th style="text-align: right;">Total tokens</th>
+<th style="text-align: center;">in:out ratio</th>
+<th style="text-align: right;">Avg input / call</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>seta_sre_investigator</code></td>
+<td style="text-align: right;">46.2 M</td>
+<td style="text-align: center;"><strong>38 : 1</strong></td>
+<td style="text-align: right;"><strong>33,180</strong></td>
+</tr>
+<tr>
+<td><code>bmad_orchestrator</code></td>
+<td style="text-align: right;">11.8 M</td>
+<td style="text-align: center;">14 : 1</td>
+<td style="text-align: right;">8,762</td>
+</tr>
+<tr>
+<td><code>bmad_developer</code></td>
+<td style="text-align: right;">2.7 M</td>
+<td style="text-align: center;">3 : 1</td>
+<td style="text-align: right;">6,191</td>
+</tr>
+</tbody>
+</table>
+<p>The whole crew burned <strong>64 M tokens</strong>, and one agent — the SRE investigator —
+is <strong>72%</strong> of it. Note the <strong>input : output ratio</strong>: 38 input tokens for every
+output token means the model re-reads a large context on <em>every</em> call. That
+ratio, not the raw total, is your waste compass. Start there.</p>
+</div>
+<h2 id="2-the-four-highest-leverage-cuts">2. The four highest-leverage cuts<a class="headerlink" href="#2-the-four-highest-leverage-cuts" title="Permanent link">&para;</a></h2>
+<h3 id="a-remove-tools-the-agent-never-uses">a) Remove tools the agent never uses<a class="headerlink" href="#a-remove-tools-the-agent-never-uses" title="Permanent link">&para;</a></h3>
+<p>Every tool an agent is granted is described in <strong>every</strong> prompt sent to the
+model — that's input tokens on every single call, whether the tool is used or
+not. In the traces, look at which tools an agent <em>actually</em> calls over many runs;
+anything never called is pure overhead.</p>
+<p>Trim the agent's <code>toolNames</code> to only what it uses:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># agents/sre/sre-agent.yaml (illustrative)</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">tools</span><span class="p">:</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">McpServer</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">      </span><span class="nt">mcpServer</span><span class="p">:</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">        </span><span class="nt">toolNames</span><span class="p">:</span><span class="w">        </span><span class="c1"># ← keep only the tools this agent actually calls</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">list_pods</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">get_logs</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dql_query</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">          </span><span class="c1"># dropped: a dozen k8s tools the SRE agent never invoked</span>
+</code></pre></div>
+<p>List the tools each agent <em>actually</em> calls straight from the traces (grouped by
+agent so you see the whole crew at once), then diff against each agent's granted
+set:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>fetch spans
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent"
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    and gen_ai.operation.name == "execute_tool" and gen_ai.tool.name != "(merged tools)"
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>| summarize calls = count(), by:{agent = service.name, tool = gen_ai.tool.name}
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>| sort agent asc, calls desc
+</code></pre></div>
+<div class="admonition example">
+<p class="admonition-title">Measure the schema tax directly</p>
+<p>Each tool is a JSON schema injected into every prompt. On the reference
+tenant one captured <code>call_llm</code> request carried <strong>7</strong> tool declarations costing
+<strong>~1,160 input tokens</strong> — about <strong>165 tokens per tool, on every call</strong>. The
+shipped SRE agent (<code>agents/sre/sre-agent.yaml</code>) attaches the built-in
+<code>kagent-tool-server</code> with <strong>no <code>toolNames</code> filter</strong>, so every discovered k8s
+and networking tool rides along — far more than a diagnosis actually calls.
+Pin <code>toolNames</code> to the handful the traces prove it uses and you reclaim those
+tokens on all 1,357 calls — before touching anything else.</p>
+</div>
+<p>Re-apply (<code>bash agents/install-agents.sh</code>), send the same prompts, and compare
+input-token counts in Dynatrace. Fewer tools → smaller prompts → lower cost on
+<em>every</em> call.</p>
+<h4 id="tool-coverage-lookup-the-never-called-tools-by-name">Tool-coverage lookup — the never-called tools, by name<a class="headerlink" href="#tool-coverage-lookup-the-never-called-tools-by-name" title="Permanent link">&para;</a></h4>
+<p>The query above lists the tools an agent <em>did</em> call. The optimization you want
+is the <strong>complement</strong>: which granted tools did it <strong>never</strong> call? Those are the
+pure-overhead schemas to drop first. Left-join the agent's <em>granted</em> tool set
+against the tools it actually called, so zero-call tools surface explicitly.</p>
+<p>The granted set ships as a lookup table —
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/tree/main/cluster/dynatrace/optimization/tool-grants.lookup.json"><code>cluster/dynatrace/optimization/tool-grants.lookup.json</code></a> —
+generated from the agents' <code>toolNames</code>. The query below embeds the SRE agent's
+15 granted tools inline via <code>data record(...)</code> (so it's self-contained) and
+<code>lookup</code>s the traces for each tool's call count; <code>coalesce(..., 0)</code> turns a
+never-called tool into a <code>0</code>, and the <code>verdict</code> column flags the drop candidates:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>data record(tool = "k8s_get_resources"),
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>     record(tool = "k8s_describe_resource"),
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>     record(tool = "k8s_get_resource_yaml"),
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>     record(tool = "k8s_get_pod_logs"),
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>     record(tool = "k8s_get_events"),
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>     record(tool = "k8s_get_available_api_resources"),
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>     record(tool = "k8s_get_cluster_configuration"),
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>     record(tool = "k8s_check_service_connectivity"),
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>     record(tool = "k8s_apply_manifest"),
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>     record(tool = "k8s_patch_resource"),
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>     record(tool = "k8s_scale"),
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>     record(tool = "k8s_rollout"),
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>     record(tool = "k8s_label_resource"),
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>     record(tool = "k8s_annotate_resource"),
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>     record(tool = "k8s_execute_command")
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>| lookup [
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>    fetch spans
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>    | filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent"
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>        and service.name == "${WORKSHOP_PREFIX}-sre-agent"
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>        and gen_ai.operation.name == "execute_tool"
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>        and gen_ai.tool.name != "(merged tools)"
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>    | summarize calls = count(), by:{tool = gen_ai.tool.name}
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>  ], sourceField:tool, lookupField:tool, prefix:"called_"
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>| fieldsAdd calls = coalesce(called_calls, 0)
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>| fieldsAdd verdict = if(calls == 0, "NEVER CALLED — drop candidate", else: "used")
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>| fieldsRemove called_tool, called_calls
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>| sort calls asc
+</code></pre></div>
+<p>The <code>service.name == "${WORKSHOP_PREFIX}-sre-agent"</code> filter here is <strong>intentional</strong>:
+coverage is a per-agent question ("which of <em>this</em> agent's granted tools did
+<em>this</em> agent never call"). To cover another agent, swap the service name and the
+<code>data record(...)</code> block for that agent's rows from the lookup file. The
+dashboard's <strong>Tool coverage</strong> tile and the notebook's <strong>tool-coverage</strong> cell run
+exactly this query.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tool-call count is the headline</p>
+<p>The dashboard's top row carries a <strong>Tool calls</strong> single-value tile (total
+<code>execute_tool</code> spans) right next to LLM calls — so the never-/rarely-used
+angle is visible before you even scroll. A tool with <strong>zero</strong> calls in the
+coverage table is an unconditional drop; a tool with a handful of calls on a
+large sample is a <em>rarely-used</em> candidate worth questioning.</p>
+</div>
+<h3 id="b-tighten-the-system-prompt">b) Tighten the system prompt<a class="headerlink" href="#b-tighten-the-system-prompt" title="Permanent link">&para;</a></h3>
+<p>A rambling system prompt is a fixed tax on every request. Shorten it to the
+essentials; move examples out unless they measurably improve the eval score.</p>
+<h3 id="c-fix-chatty-workflows">c) Fix chatty workflows<a class="headerlink" href="#c-fix-chatty-workflows" title="Permanent link">&para;</a></h3>
+<p>In a BMAD run, the span waterfall (module 04) shows how many A2A hops and LLM
+calls a task took. Redundant hand-offs, an agent that re-reads context it already
+has, or a loop that retries silently all show up as extra <code>gen_ai</code> spans. Collapse
+the hops that don't earn their tokens.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>fetch spans
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and isNotNull(gen_ai.usage.input_tokens)
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>| summarize llmCalls = count(), inputTokens = sum(gen_ai.usage.input_tokens),
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    by:{agent = service.name, task = gen_ai.task.id}
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>| filter llmCalls &gt;= 5
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>| sort inputTokens desc
+</code></pre></div>
+<div class="admonition example">
+<p class="admonition-title">Loops are where big agents actually bleed</p>
+<p>On the reference tenant the SRE investigator's heaviest task made <strong>7
+<code>call_llm</code> hops and re-sent 228,000 input tokens</strong> — the same growing context
+pushed to the model again and again. For an already-lean agent (few tools,
+tight prompt) this loop re-send, <em>not</em> unused tools, is the dominant cost. The
+dashboard's <strong>loop table</strong> ranks these so you fix the worst first.</p>
+</div>
+<h3 id="d-right-size-the-model-per-agent">d) Right-size the model per agent<a class="headerlink" href="#d-right-size-the-model-per-agent" title="Permanent link">&para;</a></h3>
+<p>Not every agent needs the most capable model. kagent makes the model a
+one-line <code>ModelConfig</code> reference, so you can point a cheap, mechanical agent
+(e.g. a formatter) at a smaller/cheaper model while the reasoning-heavy
+orchestrator keeps the stronger one. This workshop already defaults the whole
+crew to <strong>DeepSeek</strong> for cost; per-agent tuning goes further.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># agents/mcp/00-modelconfig.yaml — the shared workshop-llm (DeepSeek, cost-first)</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># Create a second, cheaper ModelConfig and reference it from the agents that</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># don't need the strong model. One field per agent: spec.modelConfig.</span>
+</code></pre></div>
+<h2 id="3-prove-the-win">3. Prove the win<a class="headerlink" href="#3-prove-the-win" title="Permanent link">&para;</a></h2>
+<p>Open the <strong>before/after notebook</strong> (deployed above). Its §5 cell measures the one
+number that moves — average input tokens per LLM call, <strong>per agent</strong> — and the
+section time-picker is how you switch the <em>before</em> and <em>after</em> windows. Read the
+row for the agent you changed and compare it across the two windows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>fetch spans
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>| filter workshop.attendee == "${WORKSHOP_PREFIX}" and service.namespace == "kagent" and isNotNull(gen_ai.usage.input_tokens)
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>| summarize llmCalls = count(),
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    avgInputPerCall    = round(avg(gen_ai.usage.input_tokens)),
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    medianInputPerCall = round(median(gen_ai.usage.input_tokens)),
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    totalInputTokens   = sum(gen_ai.usage.input_tokens), by:{service.name}
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>| sort avgInputPerCall desc
+</code></pre></div>
+<p>The procedure, in order:</p>
+<ol>
+<li>Run the query over a window <em>before</em> the change — record <code>avgInputPerCall</code>.</li>
+<li>Make <strong>one</strong> change (trim tools / tighten prompt / collapse hops / right-size model).</li>
+<li>Re-apply and replay the <strong>same</strong> prompts.</li>
+<li>Run the query over the <em>after</em> window and run the dt-evals suite (module 06).</li>
+</ol>
+<p>Fill the scorecard from those two runs:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: center;">Before</th>
+<th style="text-align: center;">After</th>
+<th style="text-align: center;">Keep?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Avg input tokens / call</td>
+<td style="text-align: center;"><em>(§5 notebook)</em></td>
+<td style="text-align: center;"><em>(§5 notebook)</em></td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Est. cost / task</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Eval pass rate</td>
+<td style="text-align: center;"><em>(module 06)</em></td>
+<td style="text-align: center;"><em>(module 06)</em></td>
+<td style="text-align: center;">✅ only if ≥ before</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition success">
+<p class="admonition-title">The rule</p>
+<p>Ship the change when <strong>cost went down and the eval pass rate did not</strong>. If
+quality dropped, revert — the cheaper agent that's wrong is more expensive
+than the costly one that's right.</p>
+</div>
+<h2 id="4-make-it-continuous-the-guardian-workflow">4. Make it continuous — the guardian + workflow<a class="headerlink" href="#4-make-it-continuous-the-guardian-workflow" title="Permanent link">&para;</a></h2>
+<p>Optimization isn't a one-off. Because cost and quality are now both telemetry,
+the workshop ships two more dtctl-ready artifacts in
+<a href="https://github.com/henrikrexed/dynatrace-AI-Agent-Workshop/tree/main/cluster/dynatrace/optimization"><code>cluster/dynatrace/optimization/</code></a>
+that turn the optimization loop into an automated gate:</p>
+<p><strong>A Site Reliability Guardian</strong> (<code>ai-agent-quality-cost.guardian.yaml</code>) — three
+DQL objectives over the crew's <code>call_llm</code> spans, so a regression fails loudly:</p>
+<table>
+<thead>
+<tr>
+<th>Objective</th>
+<th>SLI</th>
+<th>Rule</th>
+<th>target / warning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cost per LLM call</td>
+<td>avg input tokens / call</td>
+<td><code>≤</code></td>
+<td>20,000 / 18,000</td>
+</tr>
+<tr>
+<td>Loop efficiency</td>
+<td>avg hops / task</td>
+<td><code>≤</code></td>
+<td>5 / 4</td>
+</tr>
+<tr>
+<td>Answer substance (quality proxy)</td>
+<td>avg output tokens / call</td>
+<td><code>≥</code></td>
+<td>200 / 300</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>dtctl<span class="w"> </span>create<span class="w"> </span>settings<span class="w"> </span>-f<span class="w"> </span>ai-agent-quality-cost.guardian.yaml<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>--schema<span class="w"> </span>app:dynatrace.site.reliability.guardian:guardians<span class="w"> </span>--scope<span class="w"> </span>environment
+</code></pre></div>
+<p>The quality proxy backstops the cost cuts — an agent that got "cheaper" by
+emitting truncated answers trips it. For the full <strong>LLM-judge</strong> quality gate,
+pair the guardian with the dt-evals suite (module 06).</p>
+<p><strong>A scheduled Workflow</strong> (<code>ai-agent-optimization.workflow.yaml</code>) runs that
+guardian daily over the last 24h (schedule ships disabled — flip
+<code>trigger.schedule.isActive: true</code> to go continuous):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>dtctl<span class="w"> </span>create<span class="w"> </span>workflow<span class="w"> </span>-f<span class="w"> </span>ai-agent-optimization.workflow.yaml
+</code></pre></div>
+<p>No <code>dtctl</code>? Upload the UI-importable workflow JSON
+(<a href="../assets/optimization/ai-agent-optimization.workflow.json">ai-agent-optimization.workflow.json</a>)
+from <strong>Workflows → Upload</strong>. It carries the reference tenant's guardian
+<code>objectId</code> (a base64 string) — after you create your own guardian, repoint it to
+yours: <code>dtctl get settings --schema app:dynatrace.site.reliability.guardian:guardians -o json --plain | grep -B2 "AI Agent Quality"</code> gives the new <code>objectId</code>; paste it into <code>tasks.run_validation.input.objectId</code>.</p>
+<p>Beyond the guardian:</p>
+<ul>
+<li>Keep the dt-evals suite in CI as a <strong>regression + budget gate</strong> on every agent
+  change.</li>
+<li>Watch the dashboard's <strong>token-trend</strong> tile; the guardian alerts when an
+  agent's tokens-per-call drifts up.</li>
+<li>Re-rank your agents periodically — usage patterns change, and today's cheap
+  agent is tomorrow's top spender.</li>
+</ul>
+<h2 id="what-you-achieved-acceptance">What you achieved (acceptance)<a class="headerlink" href="#what-you-achieved-acceptance" title="Permanent link">&para;</a></h2>
+<ul>
+<li>You identified the most expensive agents from real telemetry.</li>
+<li>You applied at least one concrete cut (unused tools / prompt / hops / model)
+  and <strong>proved</strong> with evals that quality held while cost fell.</li>
+<li>You have a repeatable loop — observe → evaluate → change → re-measure — to keep
+  agents cost-efficient in production.</li>
+</ul>
+<h2 id="youve-completed-the-arc">You've completed the arc<a class="headerlink" href="#youve-completed-the-arc" title="Permanent link">&para;</a></h2>
+<p><strong>Why → kagent → cluster → agents → secure → observe → diagnose → evaluate → optimize.</strong>
+You built a full, cost-efficient AI-agent platform on Kubernetes and have the
+telemetry and evals to keep it that way.</p>
+<p>Stuck on anything? See <strong><a href="../troubleshooting/">Troubleshooting</a></strong>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.code.annotate", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
